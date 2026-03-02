@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elite Center – Gimnasio | Villa Mercedes, San Luis</title>
+<meta name="description" content="Gimnasio Elite Center en Villa Mercedes, San Luis. Entrenadores certificados, evaluaciones personalizadas, inscripción online y reserva de turnos.">
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- Styles -->
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cur" id="cur"></div>
+<div class="cur-r" id="cur-r"></div>
+
+<!-- WA FLOAT -->
+<div class="wa-float">
+  <span class="wa-lbl">Hola, ya vi los planes</span>
+  <a class="wa-btn" href="https://wa.me/5492657315090?text=Hola%20Elite%20Center%20VM!%20Ya%20vi%20los%20planes%20en%20la%20web%20y%20quiero%20empezar.%20%F0%9F%92%AA" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+</div>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mob-menu">
+  <button class="menu-close" id="menu-close">✕</button>
+  <a href="#about" onclick="closeMenu()">Nosotros</a>
+  <a href="#planes" onclick="closeMenu()">Planes</a>
+  <a href="#inscripcion" onclick="closeMenu()">Inscribirse</a>
+  <a href="#turnos" onclick="closeMenu()">Horarios</a>
+  <a href="#ubicacion" onclick="closeMenu()">Ubicación</a>
+  <a href="#faq" onclick="closeMenu()">FAQ</a>
+  <a href="https://www.instagram.com/elitecentervm/" target="_blank">@elitecentervm</a>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="logo">
+    <img src="logo.png" alt="Elite Center" style="height:36px;width:auto;object-fit:contain"><span class="logo-t">ELITE <em>CENTER</em></span>
+  </a>
+  <div class="nav-r">
+    <ul class="nav-ul">
+      <li><a href="#about">Nosotros</a></li>
+      <li><a href="#planes">Planes</a></li>
+      <li><a href="#inscripcion">Inscribirse</a></li>
+      <li><a href="#turnos">Horarios</a></li>
+      <li><a href="#ubicacion">Ubicación</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a href="https://www.instagram.com/elitecentervm/" target="_blank" rel="noopener" class="ig-link">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      @elitecentervm
+    </a>
+    <a href="#inscripcion" class="nav-btn">Empezar ahora</a>
+    <button class="burger" id="burger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-ov"></div>
+  <div class="hero-stripe hs1"></div>
+  <div class="hero-stripe hs2"></div>
+  <div class="hero-c">
+    <h1 class="hero-h">
+      ENTRENÁ CON<br>
+      <span class="r">PLANIFICACIÓN</span><br>
+      <span class="o">PROFESIONAL</span>
+    </h1>
+    <div class="hero-loc">📍 Villa Mercedes, San Luis &nbsp;·&nbsp; <em>@elitecentervm</em></div>
+    <p class="hero-p">Resultados reales con entrenadores certificados, evaluaciones personalizadas y programas diseñados para vos. Sin improvisar.</p>
+    <div class="hero-btns">
+      <a href="#inscripcion" class="btn btn-red">Inscribirse ahora</a>
+      <a href="#turnos" class="btn btn-out">Agendar evaluación</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-n">100<em>%</em></div><div class="stat-l">Entrenadores certificados</div></div>
+    <div class="stat"><div class="stat-n">365<em>d</em></div><div class="stat-l">Abierto todo el año</div></div>
+  </div>
+</section>
+
+<!-- ══ ABOUT ══ -->
+<section class="about sec" id="about">
+  <div class="about-img reveal">
+    <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=800&q=80" alt="Instalaciones Elite Center">
+    <div class="about-badge">Instalaciones<br>modernas &<br>equipadas</div>
+  </div>
+  <div class="reveal">
+    <div class="sec-lbl">Quiénes somos</div>
+    <h2 class="sec-h">MÁS QUE UN<br><span class="out">GIMNASIO</span></h2>
+    <div class="divl"></div>
+    <p>Elite Center es el centro de entrenamiento de referencia en Villa Mercedes, San Luis. Un espacio para personas que quieren mejorar su condición física, alcanzar metas de salud o potenciar su rendimiento con seriedad y estructura.</p>
+    <p>Nuestro equipo de entrenadores calificados y certificados realiza evaluaciones físicas, deportivas y de salud para diseñar tu programa 100% personalizado.</p>
+    <div class="pillars">
+      <div class="pill"><div class="pill-ico">🎯</div><div><strong>Objetivos claros</strong><span>Fuerza, resistencia, pérdida de grasa, tonificación</span></div></div>
+      <div class="pill"><div class="pill-ico">📋</div><div><strong>Plan personalizado</strong><span>Basado en tu evaluación inicial</span></div></div>
+      <div class="pill"><div class="pill-ico">👥</div><div><strong>Equipo certificado</strong><span>Profesionales con formación real</span></div></div>
+      <div class="pill"><div class="pill-ico">🏋️</div><div><strong>Equipamiento moderno</strong><span>Maquinaria de última generación</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ VALUES ══ -->
+<section class="values sec" id="values">
+  <div class="sec-lbl reveal">Por qué elegirnos</div>
+  <h2 class="sec-h reveal">LO QUE NOS<br><span class="out">DIFERENCIA</span></h2>
+  <div class="vals-g">
+    <div class="val-c reveal"><div class="val-ico">⚡</div><div class="val-t">Entrenamiento Estructurado</div><p class="val-d">Cada sesión tiene un propósito dentro de tu programa. Progresión real semana a semana. Sin improvisación.</p></div>
+    <div class="val-c reveal"><div class="val-ico">🏆</div><div class="val-t">Entrenadores Certificados</div><p class="val-d">Formación y certificaciones reconocidas. Técnica correcta, ajuste continuo y seguimiento real de tu evolución.</p></div>
+    <div class="val-c reveal"><div class="val-ico">📊</div><div class="val-t">Evaluación & Seguimiento</div><p class="val-d">Evaluamos tu punto de partida físico, deportivo y de salud. Medimos resultados concretos.</p></div>
+    <div class="val-c reveal"><div class="val-ico">🔥</div><div class="val-t">Comunidad Motivada</div><p class="val-d">El ambiente, los compañeros y los entrenadores te empujan a superarte cada día.</p></div>
+  </div>
+</section>
+
+<!-- ══ PROGRAMS ══ -->
+<section class="programs sec" id="programs">
+  <div class="sec-lbl reveal">Lo que ofrecemos</div>
+  <h2 class="sec-h reveal">PROGRAMAS &<br><span class="out">DISCIPLINAS</span></h2>
+  <div class="progs-g">
+    <div class="prog reveal"><img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=700&q=80" alt="Musculación"><div class="prog-in"><div class="prog-n2">01</div><div class="prog-tag">Fuerza</div><div class="prog-name">Musculación</div><div class="prog-desc">Hipertrofia, fuerza y tonificación con programas periodizados y técnica supervisada.</div><div class="prog-arr">Ver más</div></div></div>
+    <div class="prog reveal"><img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=700&q=80" alt="HIIT"><div class="prog-in"><div class="prog-n2">02</div><div class="prog-tag">Cardio / Funcional</div><div class="prog-name">Funcional & HIIT</div><div class="prog-desc">Quema de grasa y resistencia con circuitos de alta intensidad bien estructurados.</div><div class="prog-arr">Ver más</div></div></div>
+    <div class="prog reveal"><img src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1?w=700&q=80" alt="Pérdida de grasa"><div class="prog-in"><div class="prog-n2">03</div><div class="prog-tag">Composición corporal</div><div class="prog-name">Pérdida de Grasa</div><div class="prog-desc">Reducción de grasa y mejora de composición combinando fuerza y cardio de forma estratégica.</div><div class="prog-arr">Ver más</div></div></div>
+    <div class="prog reveal"><img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=700&q=80" alt="Rendimiento deportivo"><div class="prog-in"><div class="prog-n2">04</div><div class="prog-tag">Performance</div><div class="prog-name">Rendimiento Deportivo</div><div class="prog-desc">Para deportistas que buscan mejorar potencia, velocidad y resistencia con entrenamiento específico.</div><div class="prog-arr">Ver más</div></div></div>
+    <div class="prog reveal"><img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=700&q=80" alt="Salud y bienestar"><div class="prog-in"><div class="prog-n2">05</div><div class="prog-tag">Salud</div><div class="prog-name">Salud & Bienestar</div><div class="prog-desc">Programas para mejorar salud general, movilidad y calidad de vida. Ideales para empezar desde cero.</div><div class="prog-arr">Ver más</div></div></div>
+    <div class="prog reveal"><img src="https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=700&q=80" alt="Clases grupales"><div class="prog-in"><div class="prog-n2">06</div><div class="prog-tag">Grupal</div><div class="prog-name">Clases Grupales</div><div class="prog-desc">Entrenamiento en grupo con energía colectiva. Para quienes se motivan acompañados.</div><div class="prog-arr">Ver más</div></div></div>
+  </div>
+</section>
+
+<!-- ══ PROCESS ══ -->
+<section class="process sec" id="process">
+  <div class="sec-lbl reveal">Cómo trabajamos</div>
+  <h2 class="sec-h reveal">TU CAMINO EN<br><span class="out">ELITE CENTER</span></h2>
+  <div class="steps-g">
+    <div class="step reveal"><div class="step-bg">1</div><div class="step-ico">📋</div><div class="step-t">Evaluación Inicial</div><p class="step-d">Evaluación física, deportiva y de salud completa para conocer tu punto de partida, historial y objetivos reales.</p></div>
+    <div class="step reveal"><div class="step-bg">2</div><div class="step-ico">🎯</div><div class="step-t">Plan Personalizado</div><p class="step-d">Diseñamos un programa 100% adaptado a tus metas y condición actual. Sin planes genéricos.</p></div>
+    <div class="step reveal"><div class="step-bg">3</div><div class="step-ico">💪</div><div class="step-t">Entrenamiento Guiado</div><p class="step-d">Entrenás con acompañamiento de entrenadores certificados que corrigen técnica en tiempo real.</p></div>
+    <div class="step reveal"><div class="step-bg">4</div><div class="step-ico">📈</div><div class="step-t">Seguimiento Continuo</div><p class="step-d">Medimos tu progreso y actualizamos el plan para que siempre estés avanzando. Sin estancamientos.</p></div>
+  </div>
+</section>
+
+<!-- ══ PLANES ══ -->
+<section class="planes sec" id="planes">
+  <div class="sec-lbl reveal">Membresías</div>
+  <h2 class="sec-h reveal">PLANES Y<br><span class="out">PRECIOS</span></h2>
+  <div class="planes-intro reveal">
+    <p>Los turnos funcionan por sistema de <strong style="color:var(--w)">créditos</strong>: cada crédito equivale a un turno de entrenamiento. Elegí la cantidad que mejor se adapta a tu ritmo.</p>
+    <p style="margin-top:10px;font-size:.85rem;color:var(--mut)">Los turnos se reservan a través de <strong style="color:var(--red)">Turnos Web App 2.0</strong> — el gimnasio te asigna los créditos y vos elegís cuándo entrenar, sin llamar ni escribir mensajes.</p>
+  </div>
+
+  <!-- Tab switcher -->
+  <div style="display:flex;gap:2px;margin:32px 0 2px" class="reveal">
+    <button onclick="switchPlan('mensual')" id="tab-mensual"
+      style="flex:1;padding:14px 10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border:none;background:var(--red);color:var(--w);transition:all .2s">
+      💪 Plan Mensual
+    </button>
+    <button onclick="switchPlan('funcional')" id="tab-funcional"
+      style="flex:1;padding:14px 10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border:none;background:var(--g2);color:var(--mut);transition:all .2s">
+      ⚡ Abono Funcional
+    </button>
+  </div>
+
+  <!-- PLAN MENSUAL -->
+  <div id="planes-mensual" class="plans-g">
+    <div class="plan reveal">
+      <span class="plan-lbl">Entrada al ritmo</span>
+      <div class="plan-name">8 Créditos</div>
+      <div class="plan-price"><sup>$</sup>39.000</div>
+      <div class="plan-per">por mes &nbsp;·&nbsp; $4.875 c/turno</div>
+      <div class="plan-save" style="visibility:hidden">—</div>
+      <ul class="plan-feats">
+        <li>8 turnos de entrenamiento al mes</li>
+        <li>Reserva online · Turnos Web App 2.0</li>
+        <li>Acceso a sala completa</li>
+        <li>Evaluación física inicial incluida</li>
+        <li>Seguimiento de entrenadores</li>
+      </ul>
+      <a href="https://wa.me/5492657315090?text=Hola%20Elite%20Center%20VM!%20Me%20interesa%20el%20Plan%20Mensual%208%20cr%C3%A9ditos%20(%2439.000).%20%C2%BFC%C3%B3mo%20me%20inscribo%3F" target="_blank" class="plan-cta plan-cta-out">Quiero este plan</a>
+    </div>
+    <div class="plan hot reveal">
+      <div class="plan-badge">Más elegido</div>
+      <span class="plan-lbl">Mejor precio por turno</span>
+      <div class="plan-name">12 Créditos</div>
+      <div class="plan-price"><sup>$</sup>42.000</div>
+      <div class="plan-per">por mes &nbsp;·&nbsp; $3.500 c/turno</div>
+      <div class="plan-save">Ahorrás $1.375 por turno</div>
+      <ul class="plan-feats">
+        <li>12 turnos de entrenamiento al mes</li>
+        <li>Reserva online · Turnos Web App 2.0</li>
+        <li>Acceso a sala completa</li>
+        <li>Evaluación física inicial incluida</li>
+        <li>Seguimiento y ajuste de plan</li>
+        <li>Podés entrenar 3x por semana</li>
+      </ul>
+      <a href="https://wa.me/5492657315090?text=Hola%20Elite%20Center%20VM!%20Me%20interesa%20el%20Plan%20Mensual%2012%20cr%C3%A9ditos%20(%2442.000).%20%C2%BFC%C3%B3mo%20me%20inscribo%3F" target="_blank" class="plan-cta plan-cta-sol">Quiero este plan</a>
+    </div>
+    <div class="plan reveal">
+      <span class="plan-lbl">Para los más comprometidos</span>
+      <div class="plan-name">20 Créditos</div>
+      <div class="plan-price"><sup>$</sup>44.000</div>
+      <div class="plan-per">por mes &nbsp;·&nbsp; $2.200 c/turno</div>
+      <div class="plan-save">El precio más bajo por turno</div>
+      <ul class="plan-feats">
+        <li>20 turnos de entrenamiento al mes</li>
+        <li>Reserva online · Turnos Web App 2.0</li>
+        <li>Acceso a sala completa</li>
+        <li>Evaluación física inicial incluida</li>
+        <li>Seguimiento y ajuste de plan</li>
+        <li>Podés entrenar 5x por semana</li>
+      </ul>
+      <a href="https://wa.me/5492657315090?text=Hola%20Elite%20Center%20VM!%20Me%20interesa%20el%20Plan%20Mensual%2020%20cr%C3%A9ditos%20(%2444.000).%20%C2%BFC%C3%B3mo%20me%20inscribo%3F" target="_blank" class="plan-cta plan-cta-out">Quiero este plan</a>
+    </div>
+  </div>
+
+  <!-- ABONO FUNCIONAL -->
+  <div id="planes-funcional" class="plans-g" style="display:none">
+    <div class="plan reveal">
+      <span class="plan-lbl">Entrada al ritmo</span>
+      <div class="plan-name">8 Créditos</div>
+      <div class="plan-price"><sup>$</sup>27.000</div>
+      <div class="plan-per">por mes &nbsp;·&nbsp; $3.375 c/turno</div>
+      <div class="plan-save" style="visibility:hidden">—</div>
+      <ul class="plan-feats">
+        <li>8 turnos de entrenamiento funcional</li>
+        <li>Reserva online · Turnos Web App 2.0</li>
+        <li>Clases guiadas por entrenadores</li>
+        <li>Evaluación física inicial incluida</li>
+        <li>Ideal para empezar desde cero</li>
+      </ul>
+      <a href="https://wa.me/5492657315090?text=Hola%20Elite%20Center%20VM!%20Me%20interesa%20el%20Abono%20Funcional%208%20cr%C3%A9ditos%20(%2427.000).%20%C2%BFC%C3%B3mo%20me%20inscribo%3F" target="_blank" class="plan-cta plan-cta-out">Quiero este plan</a>
+    </div>
+    <div class="plan hot reveal">
+      <div class="plan-badge">Más elegido</div>
+      <span class="plan-lbl">Mejor precio por turno</span>
+      <div class="plan-name">12 Créditos</div>
+      <div class="plan-price"><sup>$</sup>29.000</div>
+      <div class="plan-per">por mes &nbsp;·&nbsp; $2.416 c/turno</div>
+      <div class="plan-save">Ahorrás $959 por turno</div>
+      <ul class="plan-feats">
+        <li>12 turnos de entrenamiento funcional</li>
+        <li>Reserva online · Turnos Web App 2.0</li>
+        <li>Clases guiadas por entrenadores</li>
+        <li>Evaluación física inicial incluida</li>
+        <li>Seguimiento de progreso</li>
+        <li>Podés entrenar 3x por semana</li>
+      </ul>
+      <a href="https://wa.me/5492657315090?text=Hola%20Elite%20Center%20VM!%20Me%20interesa%20el%20Abono%20Funcional%2012%20cr%C3%A9ditos%20(%2429.000).%20%C2%BFC%C3%B3mo%20me%20inscribo%3F" target="_blank" class="plan-cta plan-cta-sol">Quiero este plan</a>
+    </div>
+    <div class="plan reveal">
+      <span class="plan-lbl">Para los más comprometidos</span>
+      <div class="plan-name">20 Créditos</div>
+      <div class="plan-price"><sup>$</sup>31.000</div>
+      <div class="plan-per">por mes &nbsp;·&nbsp; $1.550 c/turno</div>
+      <div class="plan-save">El precio más bajo por turno</div>
+      <ul class="plan-feats">
+        <li>20 turnos de entrenamiento funcional</li>
+        <li>Reserva online · Turnos Web App 2.0</li>
+        <li>Clases guiadas por entrenadores</li>
+        <li>Evaluación física inicial incluida</li>
+        <li>Seguimiento de progreso</li>
+        <li>Podés entrenar 5x por semana</li>
+      </ul>
+      <a href="https://wa.me/5492657315090?text=Hola%20Elite%20Center%20VM!%20Me%20interesa%20el%20Abono%20Funcional%2020%20cr%C3%A9ditos%20(%2431.000).%20%C2%BFC%C3%B3mo%20me%20inscribo%3F" target="_blank" class="plan-cta plan-cta-out">Quiero este plan</a>
+    </div>
+  </div>
+
+  <div class="reveal" style="margin-top:24px;background:var(--g1);border-left:3px solid var(--red);padding:18px 22px;display:flex;align-items:flex-start;gap:14px">
+    <span style="font-size:1.4rem;flex-shrink:0">📱</span>
+    <div>
+      <strong style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px">¿Cómo funciona Turnos Web App 2.0?</strong>
+      <p style="font-size:.82rem;color:var(--mut);line-height:1.7">Una vez inscripto, el gimnasio te asigna tus créditos en la app. Desde ahí podés ver los horarios disponibles y reservar tus turnos cuando quieras. Sin llamar, sin mensajes, completamente automático.</p>
+    </div>
+  </div>
+  <p class="plans-note reveal">* Precios en pesos argentinos. Consultá por WhatsApp para conocer promociones vigentes.</p>
+</section>
+
+<!-- ══ INSCRIPCIÓN ══ -->
+<section class="inscripcion sec" id="inscripcion">
+  <div class="sec-lbl reveal">Empezá hoy</div>
+  <h2 class="sec-h reveal">INSCRIPCIÓN<br><span class="out">ONLINE</span></h2>
+  <div class="form-wrap" style="margin-top:52px">
+    <div class="form-info reveal">
+      <div class="divl"></div>
+      <p>Completá el formulario y nos ponemos en contacto con vos en menos de 24 horas con toda la información que necesitás para empezar.</p>
+      <p>Sin compromiso. Sin que tengas que escribir mensajes de ida y vuelta.</p>
+      <ul class="form-perks">
+        <li><div class="perk-ico">⚡</div><span>Recibís respuesta organizada con todo lo que necesitás</span></li>
+        <li><div class="perk-ico">📱</div><span>Sin mensajes repetitivos ni esperar respuesta</span></li>
+        <li><div class="perk-ico">🎯</div><span>Te asignamos un entrenador según tu objetivo</span></li>
+        <li><div class="perk-ico">✅</div><span>Tu info llega directo al equipo de Elite Center</span></li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="form-box" id="form-box">
+        <h3>📝 Formulario de inscripción</h3>
+        <form id="inscripcion-form" onsubmit="submitForm(event)">
+          <div class="form-grid">
+            <div>
+              <label>Nombre completo *</label>
+              <input type="text" name="nombre" required placeholder="Tu nombre y apellido">
+            </div>
+            <div>
+              <label>Edad *</label>
+              <input type="number" name="edad" required placeholder="Tu edad" min="14" max="99">
+            </div>
+            <div>
+              <label>Teléfono / WhatsApp *</label>
+              <input type="tel" name="telefono" required placeholder="Ej: 2657 123456">
+            </div>
+            <div>
+              <label>Plan de interés</label>
+              <select name="plan">
+                <option value="">Seleccioná un plan</option>
+                <optgroup label="Plan Mensual">
+                  <option>Plan Mensual – 8 créditos ($39.000)</option>
+                  <option>Plan Mensual – 12 créditos ($42.000)</option>
+                  <option>Plan Mensual – 20 créditos ($44.000)</option>
+                </optgroup>
+                <optgroup label="Abono Funcional">
+                  <option>Abono Funcional – 8 créditos ($27.000)</option>
+                  <option>Abono Funcional – 12 créditos ($29.000)</option>
+                  <option>Abono Funcional – 20 créditos ($31.000)</option>
+                </optgroup>
+                <option>No sé todavía, quiero más info</option>
+              </select>
+            </div>
+            <div class="full">
+              <label>¿Cuál es tu objetivo principal? *</label>
+              <select name="objetivo" required>
+                <option value="">Seleccioná tu objetivo</option>
+                <option>Ganar músculo / Hipertrofia</option>
+                <option>Perder grasa / Bajar de peso</option>
+                <option>Mejorar condición física general</option>
+                <option>Rendimiento deportivo</option>
+                <option>Salud y bienestar</option>
+                <option>Tonificación</option>
+                <option>Otro</option>
+              </select>
+            </div>
+            <div class="full">
+              <label>Horarios disponibles para entrenar</label>
+              <select name="horario">
+                <option value="">Seleccioná tu preferencia</option>
+                <option>Mañana (7:00 – 11:00 hs)</option>
+                <option>Mediodía (15:00 – 16:00 hs)</option>
+                <option>Noche (18:00 – 21:00 hs)</option>
+                <option>Flexible / cualquier turno</option>
+              </select>
+            </div>
+            <div class="full">
+              <label>¿Tenés experiencia entrenando?</label>
+              <select name="experiencia">
+                <option value="">Seleccioná</option>
+                <option>Soy principiante, nunca entrené</option>
+                <option>Tengo algo de experiencia</option>
+                <option>Entreno hace tiempo con continuidad</option>
+                <option>Soy deportista</option>
+              </select>
+            </div>
+            <div class="full">
+              <label>¿Algo más que quieras contarnos?</label>
+              <textarea name="mensaje" placeholder="Lesiones previas, consultas específicas, etc. (opcional)"></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-red form-submit">Enviar inscripción ⚡</button>
+          <p class="form-note">Al enviar, tus datos van directo al equipo de Elite Center para darte atención personalizada.</p>
+        </form>
+      </div>
+      <div class="form-success" id="form-success">
+        <div class="check">✅</div>
+        <h4>¡Inscripción enviada!</h4>
+        <p>Recibimos tus datos. El equipo de Elite Center se va a comunicar con vos en las próximas horas.<br><br>Mientras tanto, podés seguirnos en Instagram <strong>@elitecentervm</strong>.</p>
+        <br>
+        <a href="https://wa.me/5492657315090?text=Hola!%20Acabo%20de%20completar%20el%20formulario%20de%20inscripci%C3%B3n%20en%20la%20web.%20%C2%BFPueden%20confirmar%20que%20lo%20recibieron%3F" target="_blank" class="btn btn-wa" style="margin-top:12px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Confirmar por WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TURNOS EVALUACIÓN ══ -->
+<section class="turnos sec" id="turnos">
+  <div class="sec-lbl reveal">Reserva de turnos</div>
+  <h2 class="sec-h reveal">AGENDÁ TU<br><span class="out">TURNO</span></h2>
+  <div class="turnos-wrap" style="margin-top:52px">
+    <div class="turno-info reveal">
+      <div class="divl"></div>
+      <p>Los turnos se gestionan a través de <strong style="color:var(--w)">Turnos Web App 2.0</strong>. Una vez inscripto, el gimnasio te asigna tus créditos y vos reservás tus clases directamente desde la app, en el horario que más te convenga.</p>
+      <p>Sin llamadas. Sin mensajes. Completamente automático.</p>
+      <div style="margin-top:28px;display:flex;flex-direction:column;gap:12px">
+        <div class="pill"><div class="pill-ico">📱</div><div><strong>Sistema online</strong><span>Reservás desde tu celular con Turnos Web App 2.0</span></div></div>
+        <div class="pill"><div class="pill-ico">⏱</div><div><strong>Duración de clase</strong><span>Aprox. 60 minutos por turno</span></div></div>
+        <div class="pill"><div class="pill-ico">📍</div><div><strong>Lugar</strong><span>Pringles 528, Villa Mercedes, San Luis</span></div></div>
+        <div class="pill"><div class="pill-ico">👟</div><div><strong>Traé</strong><span>Ropa cómoda y zapatillas deportivas</span></div></div>
+      </div>
+    </div>
+    <div class="reveal">
+      <!-- Horarios reales -->
+      <div style="background:var(--g1);border-top:3px solid var(--red);padding:36px;margin-bottom:2px">
+        <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;text-transform:uppercase;letter-spacing:2px;margin-bottom:6px">🕐 Horarios del gimnasio</h3>
+        <p style="font-size:.75rem;color:var(--mut);letter-spacing:1px;margin-bottom:24px">Lunes a Jueves · Turnos disponibles</p>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div style="display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;background:var(--blk);padding:14px 18px;border-left:3px solid var(--red)">
+            <span style="font-size:1.1rem">🌅</span>
+            <div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;text-transform:uppercase;letter-spacing:1px">Turno Mañana</div>
+              <div style="font-size:.7rem;color:var(--mut)">Lunes a Jueves</div>
+            </div>
+            <div style="text-align:right;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.1rem;color:var(--red)">07:00 – 11:00</div>
+          </div>
+          <div style="display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;background:var(--blk);padding:14px 18px;border-left:3px solid transparent">
+            <span style="font-size:1.1rem">☀️</span>
+            <div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;text-transform:uppercase;letter-spacing:1px">Turno Mediodía</div>
+              <div style="font-size:.7rem;color:var(--mut)">Lunes a Jueves</div>
+            </div>
+            <div style="text-align:right;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.1rem;color:var(--w)">15:00 – 16:00</div>
+          </div>
+          <div style="display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;background:var(--blk);padding:14px 18px;border-left:3px solid transparent">
+            <span style="font-size:1.1rem">🌙</span>
+            <div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;text-transform:uppercase;letter-spacing:1px">Turno Noche</div>
+              <div style="font-size:.7rem;color:var(--mut)">Lunes a Jueves</div>
+            </div>
+            <div style="text-align:right;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.1rem;color:var(--w)">18:00 – 21:00</div>
+          </div>
+        </div>
+        <p style="font-size:.72rem;color:var(--mut);margin-top:16px;font-style:italic">* Consultá por otros días y horarios disponibles.</p>
+      </div>
+
+      <!-- CTA Turnos Web App -->
+      <div style="background:var(--red);padding:36px;text-align:center">
+        <div style="font-size:2rem;margin-bottom:12px">📱</div>
+        <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">Turnos Web App 2.0</h3>
+        <p style="font-size:.88rem;color:rgba(255,255,255,.8);line-height:1.7;margin-bottom:24px">El sistema de reservas oficial de Elite Center. Una vez inscripto, reservás tus turnos online en segundos.</p>
+        <a href="https://wa.me/5492657315090?text=Hola%20Elite%20Center%20VM!%20Quiero%20inscribirme%20y%20empezar%20a%20usar%20Turnos%20Web%20App%202.0.%20%C2%BFQu%C3%A9%20necesito%20hacer%3F" target="_blank"
+          class="btn" style="background:var(--blk);color:var(--w);display:inline-block;margin-bottom:10px">
+          Quiero inscribirme
+        </a>
+        <p style="font-size:.7rem;color:rgba(255,255,255,.6);margin-top:8px">¿Ya sos socio? El acceso a la app te lo da directamente el gimnasio.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIOS ══ -->
+<section class="testimonios sec" id="testimonios">
+  <div class="sec-lbl reveal">Lo que dicen</div>
+  <h2 class="sec-h reveal">NUESTROS<br><span class="out">SOCIOS</span></h2>
+  <div class="testi-g">
+    <div class="testi reveal">
+      <div class="testi-q">"</div><div class="stars">★★★★★</div>
+      <p class="testi-tx">Empecé sin saber nada de entrenamiento y desde el día uno los profes me explicaron todo con paciencia. Los resultados se ven rápido cuando seguís el plan que te arman.</p>
+      <div class="testi-au"><img class="testi-av" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="Socio"><div><div class="testi-n">Miembro de Elite Center</div><div class="testi-l">Villa Mercedes, SL</div></div></div>
+    </div>
+    <div class="testi reveal">
+      <div class="testi-q">"</div><div class="stars">★★★★★</div>
+      <p class="testi-tx">Lo que más me gustó es que te hacen una evaluación antes de empezar. No es ir y hacer cualquier cosa — hay un plan real y te hacen seguimiento. Eso marca la diferencia.</p>
+      <div class="testi-au"><img class="testi-av" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" alt="Socia"><div><div class="testi-n">Miembro de Elite Center</div><div class="testi-l">Villa Mercedes, SL</div></div></div>
+    </div>
+    <div class="testi reveal">
+      <div class="testi-q">"</div><div class="stars">★★★★★</div>
+      <p class="testi-tx">Excelente ambiente y muy buenas instalaciones. Los entrenadores siempre atentos a la técnica. Lo recomiendo a cualquiera que quiera entrenar en serio en Villa Mercedes.</p>
+      <div class="testi-au"><img class="testi-av" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80" alt="Socio"><div><div class="testi-n">Miembro de Elite Center</div><div class="testi-l">Villa Mercedes, SL</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ══ -->
+<section class="faq sec" id="faq">
+  <div class="sec-lbl reveal">Consultas frecuentes</div>
+  <h2 class="sec-h reveal">PREGUNTAS<br><span class="out">FRECUENTES</span></h2>
+  <div class="faq-wrap" style="margin-top:52px">
+    <div class="faq-info reveal">
+      <div class="divl"></div>
+      <p>Estas son las preguntas que más nos hacen. Las respondemos acá para que tengas todo claro antes de empezar.</p>
+      <p>¿No encontrás lo que buscás? Escribinos directamente.</p>
+      <div class="faq-cta-box">
+        <p>¿Tenés alguna consulta que no está acá? Nuestro equipo te responde rápido.</p>
+        <a href="https://wa.me/5492657315090?text=Hola%20Elite%20Center%20VM!%20Tengo%20una%20consulta%20sobre%20el%20gimnasio." target="_blank" class="btn btn-red" style="font-size:.8rem;padding:12px 26px">Consultá por WhatsApp</a>
+      </div>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>¿Necesito experiencia previa para inscribirme?</span><span class="faq-icon">+</span></div>
+        <div class="faq-a"><p>No, para nada. Recibimos personas de todos los niveles, desde principiantes absolutos hasta deportistas avanzados. Antes de empezar hacemos una evaluación para conocer tu punto de partida y armamos el programa ideal para vos.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>¿Hacen planes de entrenamiento personalizados?</span><span class="faq-icon">+</span></div>
+        <div class="faq-a"><p>Sí, es parte fundamental de lo que hacemos. Cada socio recibe un programa diseñado específicamente según sus objetivos, condición física, historial y disponibilidad horaria. No usamos planes genéricos.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>¿Qué horarios maneja el gimnasio?</span><span class="faq-icon">+</span></div>
+        <div class="faq-a"><p>Atendemos de <strong style="color:var(--w)">lunes a jueves</strong> en tres turnos: <strong style="color:var(--w)">mañana (7:00 a 11:00 hs)</strong>, <strong style="color:var(--w)">mediodía (15:00 a 16:00 hs)</strong> y <strong style="color:var(--w)">noche (18:00 a 21:00 hs)</strong>. Los turnos se reservan online a través de Turnos Web App 2.0.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>¿Hay matrícula o costo de inscripción?</span><span class="faq-icon">+</span></div>
+        <div class="faq-a"><p>Consultanos por WhatsApp para conocer las condiciones actuales de inscripción y si hay promociones activas. Las condiciones pueden variar según el plan y el período del año.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>¿Qué incluye la evaluación física inicial?</span><span class="faq-icon">+</span></div>
+        <div class="faq-a"><p>La evaluación incluye análisis de tu condición física actual, historial deportivo y de salud, mediciones antropométricas y definición de objetivos. Dura aproximadamente 45 minutos y es gratuita para nuevos socios.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>¿Puedo pausar o cambiar mi plan?</span><span class="faq-icon">+</span></div>
+        <div class="faq-a"><p>Sí. Entendemos que la vida cambia. Consultanos tu situación y buscamos la mejor solución para que no pierdas tu lugar en el gimnasio.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>¿Las instalaciones tienen estacionamiento?</span><span class="faq-icon">+</span></div>
+        <div class="faq-a"><p>Consultanos por WhatsApp o al agendar tu evaluación para conocer los detalles del acceso y estacionamiento disponible en nuestra ubicación en Villa Mercedes.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ UBICACIÓN ══ -->
+<section class="sec" id="ubicacion" style="background:var(--g1);padding-top:100px;padding-bottom:0">
+  <div class="sec-lbl reveal">Dónde estamos</div>
+  <h2 class="sec-h reveal">ENCONTRANOS<br><span class="out">EN VILLA MERCEDES</span></h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;margin-top:48px" class="reveal">
+    <div>
+      <div class="divl"></div>
+      <p style="color:var(--mut);line-height:1.8;font-size:1rem;margin-bottom:28px">Estamos en el corazón de Villa Mercedes, San Luis. Fácil acceso y cómodo para llegar desde cualquier punto de la ciudad.</p>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="pill">
+          <div class="pill-ico">📍</div>
+          <div>
+            <strong>Dirección</strong>
+            <span>Pringles 528, Villa Mercedes, San Luis</span>
+          </div>
+        </div>
+        <div class="pill">
+          <div class="pill-ico">🕐</div>
+          <div>
+            <strong>Horarios de atención</strong>
+            <span>Lunes a Jueves: 7:00–11:00 · 15:00–16:00 · 18:00–21:00</span>
+          </div>
+        </div>
+        <div class="pill">
+          <div class="pill-ico">📞</div>
+          <div>
+            <strong>Contacto</strong>
+            <span>+54 9 2657 31-5090</span>
+          </div>
+        </div>
+        <div class="pill">
+          <div class="pill-ico">📸</div>
+          <div>
+            <strong>Instagram</strong>
+            <span>@elitecentervm</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:28px;display:flex;gap:10px;flex-wrap:wrap">
+        <a href="https://www.google.com/maps/search/Pringles+528,+Villa+Mercedes,+San+Luis,+Argentina" target="_blank" class="btn btn-red" style="font-size:.8rem;padding:12px 22px">
+          📍 Abrir en Google Maps
+        </a>
+        <a href="https://wa.me/5492657315090?text=Hola%20Elite%20Center%20VM!%20Quiero%20ir%20a%20conocer%20el%20gimnasio." target="_blank" class="btn btn-out" style="font-size:.8rem;padding:12px 22px">
+          💬 Consultarnos
+        </a>
+      </div>
+    </div>
+    <div style="position:relative">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3339.3!2d-65.4628!3d-33.6736!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sPringles%20528%2C%20Villa%20Mercedes%2C%20San%20Luis!5e0!3m2!1ses!2sar!4v1"
+        width="100%" height="380" style="border:0;filter:grayscale(1) invert(0.9) contrast(1.1);display:block"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        title="Elite Center - Pringles 528, Villa Mercedes">
+      </iframe>
+      <div style="position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;border:2px solid var(--red)"></div>
+      <a href="https://www.google.com/maps/search/Pringles+528,+Villa+Mercedes,+San+Luis,+Argentina" target="_blank"
+        style="position:absolute;bottom:0;left:0;right:0;background:rgba(8,8,8,.85);padding:10px 16px;
+        display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--w);
+        font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;
+        transition:background .2s">
+        <span style="color:var(--red)">📍</span> Pringles 528, Villa Mercedes, San Luis
+        <span style="margin-left:auto;color:var(--red)">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA BANNER ══ -->
+<div class="cta-banner" id="contact">
+  <div class="cta-bg-t">ELITE VM</div>
+  <div class="cta-eye">¿Listo para empezar?</div>
+  <h2 class="cta-h">TU TRANSFORMACIÓN<br>EMPIEZA HOY</h2>
+  <div class="cta-btns">
+    <a href="#inscripcion" class="btn btn-blk">📝 Inscribirme online</a>
+    <a href="#turnos" class="btn btn-blk">📅 Agendar evaluación</a>
+    <a href="https://wa.me/5492657315090?text=Hola%20Elite%20Center%20VM!%20Ya%20vi%20los%20planes%20en%20la%20web%20y%20quiero%20empezar.%20%F0%9F%92%AA" target="_blank" class="btn btn-wa">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Ya vi los planes, quiero empezar
+    </a>
+  </div>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="foot-top">
+    <div class="foot-brand">
+      <a href="#" class="logo" style="display:inline-flex">
+        <img src="logo.png" alt="Elite Center" style="height:36px;width:auto;object-fit:contain"><span class="logo-t">ELITE <em>CENTER</em></span>
+      </a>
+      <p>Centro de entrenamiento en Villa Mercedes, San Luis. Entrenadores certificados, evaluaciones personalizadas y resultados reales.</p>
+      <div class="foot-socials">
+        <a href="https://www.instagram.com/elitecentervm/" target="_blank" class="soc-btn" aria-label="Instagram">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <a href="https://wa.me/5492657315090" target="_blank" class="soc-btn" aria-label="WhatsApp">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h4>Navegación</h4>
+      <ul>
+        <li><a href="#about">Sobre nosotros</a></li>
+        <li><a href="#programs">Programas</a></li>
+        <li><a href="#planes">Planes y precios</a></li>
+        <li><a href="#inscripcion">Inscripción online</a></li>
+        <li><a href="#turnos">Agendar evaluación</a></li>
+        <li><a href="#faq">Preguntas frecuentes</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Contacto</h4>
+      <ul>
+        <li><a href="https://www.google.com/maps/search/Pringles+528,+Villa+Mercedes,+San+Luis,+Argentina" target="_blank">📍 Pringles 528, Villa Mercedes, San Luis</a></li>
+        <li><a href="#">🕐 Lun–Jue: 7–11 · 15–16 · 18–21 hs</a></li>
+        <li><a href="tel:+5492657315090">📞 +54 9 2657 31-5090</a></li>
+        <li><a href="https://wa.me/5492657315090?text=Hola%20Elite%20Center%20VM!" target="_blank">💬 WhatsApp</a></li>
+        <li><a href="https://www.instagram.com/elitecentervm/" target="_blank">📸 @elitecentervm</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <div class="foot-copy">© 2026 Elite Center · Villa Mercedes, San Luis, Argentina</div>
+    <div class="foot-copy">Para personas que entrenan en serio ⚡</div>
+  </div>
+</footer>
+
+
+<!-- Scripts -->
+<script src="script.js"></script>
+</body>
+</html>
