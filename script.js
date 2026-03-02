@@ -115,3 +115,45 @@ function confirmarTurno(){
   document.getElementById('turno-ok').style.display = 'block';
   window.open(link, '_blank');
 }
+
+// ── PRELOADER ──
+(function(){
+  const loader  = document.getElementById('preloader');
+  const bar     = loader.querySelector('.pre-bar');
+  const pct     = document.getElementById('pre-pct');
+  const logo    = loader.querySelector('.pre-logo');
+  let progress  = 0;
+  let done      = false;
+
+  // Animate progress bar
+  const tick = setInterval(() => {
+    // Speed up near end, slow at 90 waiting for window.load
+    const step = progress < 70 ? (Math.random() * 4 + 2)
+               : progress < 90 ? (Math.random() * 1.2 + 0.4)
+               : 0;
+    progress = Math.min(progress + step, 99);
+    bar.style.width = progress + '%';
+    pct.textContent = Math.floor(progress) + '%';
+    if (progress >= 90) pct.style.color = 'var(--red)';
+  }, 40);
+
+  function finish() {
+    if (done) return;
+    done = true;
+    clearInterval(tick);
+    // Snap to 100
+    progress = 100;
+    bar.style.width = '100%';
+    pct.textContent = '100%';
+    pct.style.color = 'var(--red)';
+    // Brief pause then exit
+    setTimeout(() => {
+      loader.classList.add('pre-exit');
+      setTimeout(() => { loader.style.display = 'none'; }, 700);
+    }, 320);
+  }
+
+  // Finish when page loads, or after max 3.5s
+  window.addEventListener('load', finish);
+  setTimeout(finish, 3500);
+})();
