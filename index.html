@@ -15,6 +15,10 @@
 
 <!-- Styles -->
 <link rel="stylesheet" href="style.css">
+
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init('lHukXYM7kBxfPjlhE');</script>
 </head>
 <body>
 
@@ -387,12 +391,16 @@
               </select>
             </div>
             <div class="full">
+              <label>Email (para recibir confirmación)</label>
+              <input type="email" name="email" placeholder="tu@email.com (opcional)">
+            </div>
+            <div class="full">
               <label>¿Algo más que quieras contarnos?</label>
               <textarea name="mensaje" placeholder="Lesiones previas, consultas específicas, etc. (opcional)"></textarea>
             </div>
           </div>
-          <button type="submit" class="btn btn-red form-submit">Enviar inscripción ⚡</button>
-          <p class="form-note">Al enviar, tus datos van directo al equipo de Elite Center para darte atención personalizada.</p>
+          <button type="submit" class="btn btn-red form-submit" id="form-btn">Enviar inscripción ⚡</button>
+          <p class="form-note">Al enviar, tus datos llegan al correo del equipo de Elite Center. Si dejás tu email recibís una confirmación automática.</p>
         </form>
       </div>
       <div class="form-success" id="form-success">

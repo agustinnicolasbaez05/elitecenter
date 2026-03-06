@@ -46,22 +46,52 @@ function toggleFaq(btn){
 // ── FORMULARIO INSCRIPCIÓN ──
 function submitForm(e){
   e.preventDefault();
-  const fd = new FormData(e.target);
-  const d = Object.fromEntries(fd);
-  const msg = encodeURIComponent(
-    `🏋️ NUEVA INSCRIPCIÓN – Elite Center\n\n` +
-    `👤 Nombre: ${d.nombre}\n` +
-    `🎂 Edad: ${d.edad} años\n` +
-    `📱 Teléfono: ${d.telefono}\n` +
-    `🎯 Objetivo: ${d.objetivo}\n` +
-    `📅 Plan de interés: ${d.plan||'Sin especificar'}\n` +
-    `⏰ Horario preferido: ${d.horario||'Sin especificar'}\n` +
-    `💪 Experiencia: ${d.experiencia||'Sin especificar'}\n` +
-    `💬 Mensaje: ${d.mensaje||'Ninguno'}`
-  );
-  window.open(`https://wa.me/5492657315090?text=${msg}`, '_blank');
-  document.getElementById('form-box').querySelector('form').style.display = 'none';
-  document.getElementById('form-success').style.display = 'block';
+  const fd  = new FormData(e.target);
+  const d   = Object.fromEntries(fd);
+  const btn = document.getElementById('form-btn');
+
+  // Validación mínima
+  if(!d.nombre || !d.edad || !d.telefono || !d.objetivo){
+    return;
+  }
+
+  // Estado cargando
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+  btn.style.opacity = '0.7';
+
+  // Parámetros para EmailJS (deben coincidir con las variables del template)
+  const params = {
+    nombre:      d.nombre,
+    edad:        d.edad,
+    telefono:    d.telefono,
+    objetivo:    d.objetivo,
+    plan:        d.plan        || 'Sin especificar',
+    horario:     d.horario     || 'Sin especificar',
+    experiencia: d.experiencia || 'Sin especificar',
+    mensaje:     d.mensaje     || 'Ninguno',
+    reply_to:    d.email       || '',
+    email:       d.email       || 'No proporcionado',
+  };
+
+  emailjs.send('service_frt4fkk', 'template_304nn5j', params)
+    .then(() => {
+      // Enviar auto-reply al usuario si dejó email
+      if(d.email) {
+        emailjs.send('service_frt4fkk', 'template_pa9k06a', params);
+      }
+      // Éxito — mostrar pantalla de confirmación
+      document.getElementById('form-box').querySelector('form').style.display = 'none';
+      document.getElementById('form-success').style.display = 'block';
+    })
+    .catch((err) => {
+      // Error — restaurar botón y avisar
+      console.error('EmailJS error:', err);
+      btn.disabled = false;
+      btn.textContent = 'Enviar inscripción ⚡';
+      btn.style.opacity = '1';
+      alert('Hubo un problema al enviar. Por favor intentá de nuevo o escribinos por WhatsApp.');
+    });
 }
 
 // ── TURNOS ──
