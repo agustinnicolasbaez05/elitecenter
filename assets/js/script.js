@@ -187,3 +187,176 @@ function confirmarTurno(){
   window.addEventListener('load', finish);
   setTimeout(finish, 3500);
 })();
+
+// ── CONTADOR ANIMADO (hero stats + sección socios) ──
+function animateCount(el, target, duration, suffix) {
+  let start = 0;
+  const step = Math.ceil(target / (duration / 16));
+  const em = el.querySelector('em');
+  const timer = setInterval(() => {
+    start = Math.min(start + step, target);
+    el.childNodes[0].textContent = start;
+    if (em) em.textContent = suffix;
+    if (start >= target) clearInterval(timer);
+  }, 16);
+}
+
+// Hero stats — trigger when hero stats become visible
+const heroStats = document.querySelector('.hero-stats');
+if (heroStats) {
+  const statsObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        document.querySelectorAll('.stat-n[data-target]').forEach(el => {
+          const target = parseInt(el.dataset.target);
+          const suffix = el.dataset.suffix || '';
+          animateCount(el, target, 1800, suffix);
+        });
+        statsObs.disconnect();
+      }
+    });
+  }, { threshold: 0.5 });
+  statsObs.observe(heroStats);
+}
+
+// Sección socios counter
+const contadorEl = document.getElementById('contador-num');
+if (contadorEl) {
+  const contObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        let n = 0;
+        const target = 300;
+        const step = Math.ceil(target / (2200 / 16));
+        const timer = setInterval(() => {
+          n = Math.min(n + step, target);
+          contadorEl.textContent = n + '+';
+          if (n >= target) clearInterval(timer);
+        }, 16);
+        contObs.disconnect();
+      }
+    });
+  }, { threshold: 0.4 });
+  contObs.observe(contadorEl);
+}
+
+// ── WHATSAPP INTELIGENTE POR HORARIO ──
+(function(){
+  // Horarios: Lun-Jue 7-11, 15-16, 18-21 (Argentina = UTC-3)
+  const now = new Date();
+  const utcH = now.getUTCHours();
+  const utcM = now.getUTCMinutes();
+  const argH = ((utcH - 3) + 24) % 24; // UTC-3
+  const day  = now.getUTCDay(); // 0=Dom,1=Lun...4=Jue
+
+  const isWeekday = day >= 1 && day <= 4;
+  const inShift = isWeekday && (
+    (argH >= 7  && argH < 11) ||
+    (argH >= 15 && argH < 16) ||
+    (argH >= 18 && argH < 21)
+  );
+
+  const lbl = document.getElementById('wa-lbl');
+  const btn = document.getElementById('wa-btn');
+  if (!lbl || !btn) return;
+
+  if (inShift) {
+    lbl.textContent = '¡Estamos online ahora!';
+    lbl.style.color = '#25D366';
+    btn.href = 'https://wa.me/5492657315090?text=Hola%20Elite%20Center!%20Ya%20vi%20los%20planes%20en%20la%20web%20y%20quiero%20empezar.%20%F0%9F%92%AA';
+  } else {
+    lbl.textContent = 'Dejanos tu consulta';
+    btn.href = 'https://wa.me/5492657315090?text=Hola%20Elite%20Center!%20Vi%20la%20web%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n.%20Cuando%20puedan%20me%20contactan%20%F0%9F%92%AA';
+  }
+})();
+
+// ── GSAP GALERÍA ──
+(function(){
+  if(typeof gsap === 'undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  const sec = document.getElementById('galeria');
+  if(!sec) return;
+
+  // Header elements entrance
+  gsap.to('.gal-label', {
+    opacity:1, y:0, duration:.7, ease:'power3.out',
+    scrollTrigger:{trigger:sec, start:'top 80%'}
+  });
+  gsap.to('.gal-title', {
+    opacity:1, y:0, duration:.8, delay:.1, ease:'power3.out',
+    scrollTrigger:{trigger:sec, start:'top 80%'}
+  });
+  gsap.to('.gal-sub', {
+    opacity:1, y:0, duration:.7, delay:.2, ease:'power3.out',
+    scrollTrigger:{trigger:sec, start:'top 80%'}
+  });
+
+  // Staggered grid items
+  gsap.to('.gal-item', {
+    opacity:1, y:0, scale:1,
+    duration:.75,
+    ease:'power3.out',
+    stagger:{amount:.55, from:'start'},
+    scrollTrigger:{
+      trigger:'#galeriaGrid',
+      start:'top 85%',
+    }
+  });
+
+  // Parallax subtle on each image
+  document.querySelectorAll('.gal-item img').forEach(img => {
+    gsap.to(img, {
+      yPercent: -8,
+      ease:'none',
+      scrollTrigger:{
+        trigger: img.closest('.gal-item'),
+        start:'top bottom',
+        end:'bottom top',
+        scrub: true
+      }
+    });
+  });
+
+  // ── LIGHTBOX ──
+  const items    = Array.from(document.querySelectorAll('.gal-item'));
+  const lightbox = document.getElementById('galLightbox');
+  const lbImg    = document.getElementById('galLbImg');
+  const lbCap    = document.getElementById('galLbCaption');
+  const btnClose = document.getElementById('galClose');
+  const btnPrev  = document.getElementById('galPrev');
+  const btnNext  = document.getElementById('galNext');
+  let current    = 0;
+
+  function openLb(idx){
+    current = idx;
+    const item = items[idx];
+    lbImg.src     = item.querySelector('img').src;
+    lbImg.alt     = item.dataset.label || '';
+    lbCap.textContent = item.dataset.label || '';
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLb(){
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function navigate(dir){
+    current = (current + dir + items.length) % items.length;
+    gsap.fromTo(lbImg, {opacity:0, x: dir*40},{opacity:1, x:0, duration:.3, ease:'power2.out'});
+    lbImg.src = items[current].querySelector('img').src;
+    lbCap.textContent = items[current].dataset.label || '';
+  }
+
+  items.forEach((item, i) => item.addEventListener('click', () => openLb(i)));
+  btnClose.addEventListener('click', closeLb);
+  btnPrev.addEventListener('click',  () => navigate(-1));
+  btnNext.addEventListener('click',  () => navigate(1));
+  lightbox.addEventListener('click', e => { if(e.target === lightbox) closeLb(); });
+  document.addEventListener('keydown', e => {
+    if(!lightbox.classList.contains('open')) return;
+    if(e.key==='Escape')      closeLb();
+    if(e.key==='ArrowLeft')   navigate(-1);
+    if(e.key==='ArrowRight')  navigate(1);
+  });
+})();
