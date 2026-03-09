@@ -29,11 +29,11 @@ const PLANIFICACIONES = {
     fecha:      'Marzo 2026',
     drive:      'https://drive.google.com/file/d/1cIbOLjSKa8EyXfvK23WMm9Tq4_9TjTeb/view?usp=sharing',
   },
-  'Lucas Rodríguez': {
+  'Maria Miranda': {
     tipo:       'Entrenamiento Deportivo',
     entrenador: 'Elite Center',
     fecha:      'Marzo 2026',
-    drive:      'https://drive.google.com/file/d/REEMPLAZAR_ID/view',
+    drive:      'https://drive.google.com/file/d/1R8FXVSAcgdkmujzqvADgB2-DSslr6zyM/view?usp=sharing',
   },
 
   // ── AGREGÁ ALUMNOS REALES ABAJO ──
