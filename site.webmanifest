@@ -1,0 +1,21 @@
+{
+  "name": "Elite Center – Gimnasio Villa Mercedes",
+  "short_name": "Elite Center",
+  "description": "Gimnasio con entrenamiento profesional en Villa Mercedes, San Luis.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#cc0000",
+  "icons": [
+    {
+      "src": "assets/img/logo-icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/img/logo-icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
