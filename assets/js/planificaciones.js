@@ -17,13 +17,13 @@
 const PLANIFICACIONES = {
 
   // ── EJEMPLOS DE MUESTRA (reemplazar con datos reales) ──
-  'Joaquin Mrña': {
+  'Valentina Baez': {
     tipo:       'Entrenamiento Funcional',
     entrenador: 'Elite Center',
     fecha:      'Marzo 2026',
     drive:      'https://drive.google.com/file/d/18abk-24h7wqDVrOE0BTnOczce7oLVd-a/view?usp=sharing',
   },
-  'Manuel Neira': {
+  'Maximiliano Ostellino': {
     tipo:       'Personalizado de Estética',
     entrenador: 'Elite Center',
     fecha:      'Marzo 2026',
