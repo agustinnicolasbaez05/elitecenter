@@ -523,11 +523,13 @@ Lucas,Rodríguez,9103"></textarea>
 // ════════════════════════════════════
 const ADMIN_USER = 'elitecenter';
 const ADMIN_PASS = 'Elite2026!';
-const MAX_HIST   = 20; // máximo versiones guardadas
+const MAX_HIST   = 20;
+const SHEET_URL  = 'https://script.google.com/macros/s/AKfycbxGfbPIu5JHPZDet1gWgiZ5w5LkP6DSRtzy62pEX5Jm4H40nb0OM0ge6z6OHHxfBBbN/exec';
 
-// ── Estado ──
-let alumnos  = JSON.parse(localStorage.getItem('ec_alumnos')  || '[]');
+// ── Estado (historial local, alumnos en Sheets) ──
+let alumnos  = [];
 let historial= JSON.parse(localStorage.getItem('ec_historial')|| '[]');
+let cargando = false;
 
 // ════════════════════════════════════
 // GSAP LOGIN ANIMATION
@@ -597,10 +599,7 @@ function animarPanel() {
   gsap.fromTo('.stat-card',   { opacity:0, y:24 },  { opacity:1, y:0, duration:.5, stagger:.08, ease:'back.out(1.3)', delay:.2 });
   gsap.fromTo('.admin-tabs',  { opacity:0, y:16 },  { opacity:1, y:0, duration:.4, ease:'power3.out', delay:.5 });
   gsap.fromTo('.panel-section.active', { opacity:0, y:20 }, { opacity:1, y:0, duration:.5, ease:'power3.out', delay:.6 });
-  actualizarStats();
-  actualizarLiveCode();
-  cargarTabla();
-  cargarHistorial();
+  cargarDesdeSheets();
   reloj();
 }
 
@@ -644,13 +643,23 @@ function agregarIndividual() {
     mostrarMsg('iMsg', 'El DNI debe tener exactamente 4 dígitos numéricos', 'err'); return;
   }
 
-  guardarVersion();
-  alumnos.push({ nombre, apellido, dni, tipo, fecha, drive });
-  guardar();
-  limpiarForm();
-  actualizarTodo();
-  mostrarMsg('iMsg', `✅ ${nombre} ${apellido} agregado`, 'ok');
-  toast(`✅ ${nombre} ${apellido} agregado correctamente`, 'green');
+  const alumno = { nombre, apellido, dni, tipo, fecha, drive };
+  mostrarMsg('iMsg', 'Guardando...', 'ok');
+
+  sheetPost({ action: 'add', alumno })
+    .then(r => {
+      if (r.ok) {
+        guardarVersion();
+        alumnos.push(alumno);
+        limpiarForm();
+        actualizarTodo();
+        mostrarMsg('iMsg', `✅ ${nombre} ${apellido} agregado`, 'ok');
+        toast(`✅ ${nombre} ${apellido} agregado correctamente`, 'green');
+      } else {
+        mostrarMsg('iMsg', '❌ Error: ' + r.msg, 'err');
+      }
+    })
+    .catch(() => mostrarMsg('iMsg', '❌ Sin conexión con Google Sheets', 'err'));
 }
 
 function limpiarForm() {
@@ -660,19 +669,19 @@ function limpiarForm() {
 
 // ── CARGA MASIVA ──
 function cargaMasiva() {
-  const tipo    = document.getElementById('bTipo').value;
-  const fecha   = document.getElementById('bFecha').value.trim();
-  const drive   = document.getElementById('bDrive').value.trim();
+  const tipo      = document.getElementById('bTipo').value;
+  const fecha     = document.getElementById('bFecha').value.trim();
+  const drive     = document.getElementById('bDrive').value.trim();
   const dniGlobal = document.getElementById('bDni').value.trim();
-  const texto   = document.getElementById('bAlumnos').value.trim();
+  const texto     = document.getElementById('bAlumnos').value.trim();
 
   if (!tipo || !fecha || !drive || !texto) {
-    mostrarMsg('bMsg', 'Completá tipo, período, drive y la lista de alumnos', 'err'); return;
+    mostrarMsg('bMsg', 'Completá tipo, período, drive y la lista', 'err'); return;
   }
 
-  guardarVersion();
   const lineas = texto.split('\n').filter(l => l.trim());
-  let ok = 0, err = 0;
+  const nuevos = [];
+  let err = 0;
 
   lineas.forEach(linea => {
     const p = linea.split(',').map(x => x.trim());
@@ -680,17 +689,29 @@ function cargaMasiva() {
     const apellido = p[1] || '';
     const dni      = p[2] || dniGlobal;
     if (nombre && apellido && dni && /^\d{4}$/.test(dni)) {
-      alumnos.push({ nombre, apellido, dni, tipo, fecha, drive });
-      ok++;
+      nuevos.push({ nombre, apellido, dni, tipo, fecha, drive });
     } else { err++; }
   });
 
-  guardar();
-  actualizarTodo();
-  document.getElementById('bAlumnos').value = '';
-  const msg = err > 0 ? `✅ ${ok} agregados · ⚠️ ${err} con error` : `✅ ${ok} alumnos agregados`;
-  mostrarMsg('bMsg', msg, ok > 0 ? 'ok' : 'err');
-  if (ok > 0) toast(`✅ ${ok} alumnos cargados correctamente`, 'green');
+  if (!nuevos.length) { mostrarMsg('bMsg', 'No hay alumnos válidos para cargar', 'err'); return; }
+
+  mostrarMsg('bMsg', `Cargando ${nuevos.length} alumnos...`, 'ok');
+
+  sheetPost({ action: 'addBulk', alumnos: nuevos })
+    .then(r => {
+      if (r.ok) {
+        guardarVersion();
+        alumnos.push(...nuevos);
+        document.getElementById('bAlumnos').value = '';
+        actualizarTodo();
+        const msg = err > 0 ? `✅ ${nuevos.length} agregados · ⚠️ ${err} con error` : `✅ ${nuevos.length} alumnos agregados`;
+        mostrarMsg('bMsg', msg, 'ok');
+        toast(`✅ ${nuevos.length} alumnos cargados correctamente`, 'green');
+      } else {
+        mostrarMsg('bMsg', '❌ Error: ' + r.msg, 'err');
+      }
+    })
+    .catch(() => mostrarMsg('bMsg', '❌ Sin conexión con Google Sheets', 'err'));
 }
 
 // ── TABLA ──
@@ -720,13 +741,20 @@ function cargarTabla() {
 
 function eliminar(idx) {
   if (!confirm(`¿Eliminar a ${alumnos[idx].nombre} ${alumnos[idx].apellido}?`)) return;
-  const nombre = `${alumnos[idx].nombre} ${alumnos[idx].apellido}`;
-  guardarVersion();
-  alumnos.splice(idx, 1);
-  guardar();
-  actualizarTodo();
-  cargarTabla();
-  toast(`🗑 ${nombre} eliminado`, '');
+  const a = alumnos[idx];
+  sheetPost({ action: 'delete', nombre: a.nombre, apellido: a.apellido, dni: a.dni })
+    .then(r => {
+      if (r.ok) {
+        guardarVersion();
+        alumnos.splice(idx, 1);
+        actualizarTodo();
+        cargarTabla();
+        toast(`🗑 ${a.nombre} ${a.apellido} eliminado`, '');
+      } else {
+        toast('❌ Error al eliminar: ' + r.msg, '');
+      }
+    })
+    .catch(() => toast('❌ Sin conexión con Google Sheets', ''));
 }
 
 // ── LIVE CODE ──
@@ -944,16 +972,6 @@ function cargarHistorial() {
   gsap.fromTo('.hist-item', { opacity:0, x:-16 }, { opacity:1, x:0, stagger:.05, duration:.35, ease:'power3.out' });
 }
 
-function restaurar(idx) {
-  const h = historial[idx];
-  if (!confirm(`¿Restaurar la versión del ${h.fecha} con ${h.total} alumnos?\nSe guardará la versión actual antes de restaurar.`)) return;
-  guardarVersion();
-  alumnos = JSON.parse(JSON.stringify(h.data));
-  guardar();
-  actualizarTodo();
-  cargarHistorial();
-  toast(`✅ Versión del ${h.fecha} restaurada`, 'green');
-}
 
 // ── STATS ──
 function actualizarStats() {
@@ -975,8 +993,92 @@ function toast(msg, type) {
   gsap.to(el, { y:80, opacity:0, duration:.35, ease:'power2.in', delay:3 });
 }
 
+// ── GOOGLE SHEETS ──
+function sheetPost(payload) {
+  // Para escritura usamos no-cors (no podemos leer respuesta pero escribe bien)
+  return fetch(SHEET_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(payload)
+  }).then(() => ({ ok: true }));
+}
+
+function cargarDesdeSheets() {
+  toast('🔄 Cargando datos...', '');
+  // Para lectura usamos script tag (JSONP) que evita CORS
+  const callbackName = 'sheetCallback_' + Date.now();
+  const script = document.createElement('script');
+
+  window[callbackName] = function(data) {
+    delete window[callbackName];
+    document.body.removeChild(script);
+    alumnos = (Array.isArray(data) ? data : []).map(r => ({
+      nombre:   String(r.nombre   || ''),
+      apellido: String(r.apellido || ''),
+      dni:      String(r.dni      || ''),
+      tipo:     String(r.tipo     || ''),
+      fecha:    String(r.fecha    || ''),
+      drive:    String(r.drive    || ''),
+    })).filter(a => a.nombre);
+    actualizarTodo();
+    cargarTabla();
+    cargarHistorial();
+    toast(`✅ ${alumnos.length} alumnos cargados desde Sheets`, 'green');
+  };
+
+  script.onerror = function() {
+    delete window[callbackName];
+    // Fallback: fetch normal
+    fetch(SHEET_URL)
+      .then(r => r.json())
+      .then(data => {
+        alumnos = (Array.isArray(data) ? data : []).map(r => ({
+          nombre:   String(r.nombre   || ''),
+          apellido: String(r.apellido || ''),
+          dni:      String(r.dni      || ''),
+          tipo:     String(r.tipo     || ''),
+          fecha:    String(r.fecha    || ''),
+          drive:    String(r.drive    || ''),
+        })).filter(a => a.nombre);
+        actualizarTodo();
+        cargarTabla();
+        cargarHistorial();
+        toast(`✅ ${alumnos.length} alumnos cargados`, 'green');
+      })
+      .catch(() => {
+        toast('⚠️ No se pudo conectar con Google Sheets', '');
+        actualizarTodo();
+        cargarTabla();
+        cargarHistorial();
+      });
+  };
+
+  script.src = SHEET_URL + '?callback=' + callbackName;
+  document.body.appendChild(script);
+}
+
+function restaurar(idx) {
+  const h = historial[idx];
+  if (!confirm(`¿Restaurar la versión del ${h.fecha} con ${h.total} alumnos?\nEsto reemplazará todos los datos en Google Sheets.`)) return;
+
+  guardarVersion();
+  const nuevos = JSON.parse(JSON.stringify(h.data));
+
+  sheetPost({ action: 'deleteAll' })
+    .then(() => sheetPost({ action: 'addBulk', alumnos: nuevos }))
+    .then(() => {
+      alumnos = nuevos;
+      actualizarTodo();
+      cargarTabla();
+      cargarHistorial();
+      toast(`✅ Versión del ${h.fecha} restaurada`, 'green');
+    })
+    .catch(() => toast('❌ Error al restaurar', ''));
+}
+
 // ── UTILS ──
-function guardar() { localStorage.setItem('ec_alumnos', JSON.stringify(alumnos)); }
+function guardar() { /* datos en Sheets, no localStorage */ }
 function actualizarTodo() { actualizarStats(); actualizarLiveCode(); }
 function mostrarMsg(id, txt, tipo) {
   const el = document.getElementById(id);
