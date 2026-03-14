@@ -1065,12 +1065,12 @@ function cargarDesdeSheets() {
   sheetGet({ action: 'get' })
     .then(data => {
       alumnos = (Array.isArray(data) ? data : []).map(r => ({
-        nombre:   String(r.nombre   || ''),
-        apellido: String(r.apellido || ''),
-        dni:      String(r.dni      || ''),
-        tipo:     String(r.tipo     || ''),
-        fecha:    String(r.fecha    || ''),
-        drive:    String(r.drive    || ''),
+        nombre:   String(r.nombre   || r.Nombre   || ''),
+        apellido: String(r.apellido || r.Apellido || ''),
+        dni:      String(r.dni      || r.DNI      || ''),
+        tipo:     String(r.tipo     || r.Tipo     || ''),
+        fecha:    String(r.fecha    || r.Fecha    || ''),
+        drive:    String(r.drive    || r.Drive    || ''),
       })).filter(a => a.nombre);
       actualizarTodo();
       cargarTabla();
