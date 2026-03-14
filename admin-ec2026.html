@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elite Center – Panel Admin</title>
+<link rel="icon" type="image/png" href="assets/img/logo-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<style>
+:root{
+  --red:#cc0000;--blk:#0a0a0a;--g1:#111;--g2:#1a1a1a;--g3:#222;
+  --w:#fff;--mut:rgba(255,255,255,.45);--border:rgba(255,255,255,.07);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--blk);color:var(--w);font-family:'Barlow',sans-serif;min-height:100vh;overflow-x:hidden}
+
+/* ══ LOGIN ══ */
+#loginScreen{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.login-bg-stripe{
+  position:absolute;width:3px;background:var(--red);opacity:.15;
+  top:-10%;height:120%;transform:rotate(25deg);
+}
+.login-bg-stripe:nth-child(1){left:15%}
+.login-bg-stripe:nth-child(2){left:35%;opacity:.08}
+.login-bg-stripe:nth-child(3){left:65%;opacity:.06}
+.login-bg-stripe:nth-child(4){left:82%;opacity:.1}
+.login-glow{
+  position:absolute;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(204,0,0,.12) 0%,transparent 70%);
+  left:-100px;top:50%;transform:translateY(-50%);pointer-events:none;
+}
+
+.login-box{
+  background:rgba(17,17,17,.85);
+  backdrop-filter:blur(20px);
+  border:1px solid var(--border);
+  border-radius:10px;padding:52px 48px;
+  width:100%;max-width:420px;
+  position:relative;z-index:1;
+  box-shadow:0 40px 100px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.04);
+  opacity:0;
+}
+.login-logo-wrap{text-align:center;margin-bottom:32px}
+.login-logo-img{width:180px;opacity:0;transform:translateY(-20px)}
+.login-divider{
+  width:40px;height:2px;background:var(--red);
+  margin:16px auto;opacity:0;
+}
+.login-sub{
+  font-size:.72rem;letter-spacing:3px;text-transform:uppercase;
+  color:var(--mut);text-align:center;margin-bottom:36px;opacity:0;
+}
+.login-field{margin-bottom:16px;opacity:0;transform:translateY(10px)}
+.login-field label{
+  display:block;font-size:.7rem;letter-spacing:2px;
+  text-transform:uppercase;color:var(--mut);margin-bottom:8px;
+}
+.login-field input{
+  width:100%;background:rgba(255,255,255,.04);
+  border:1px solid var(--border);border-radius:5px;
+  padding:14px 16px;color:var(--w);font-size:.95rem;outline:none;
+  transition:border-color .25s,box-shadow .25s;
+}
+.login-field input:focus{
+  border-color:var(--red);
+  box-shadow:0 0 0 3px rgba(204,0,0,.12);
+}
+.login-err{
+  color:#ff5555;font-size:.8rem;margin-bottom:12px;
+  display:none;text-align:center;padding:8px;
+  background:rgba(204,0,0,.08);border-radius:3px;
+  border:1px solid rgba(204,0,0,.2);
+}
+.btn-login{
+  width:100%;background:var(--red);color:var(--w);border:none;
+  padding:15px;font-family:'Barlow Condensed',sans-serif;font-weight:700;
+  font-size:1rem;letter-spacing:3px;text-transform:uppercase;
+  border-radius:5px;cursor:pointer;margin-top:8px;
+  transition:background .2s,transform .1s,box-shadow .2s;
+  opacity:0;transform:translateY(10px);
+  box-shadow:0 4px 20px rgba(204,0,0,.3);
+}
+.btn-login:hover{background:#aa0000;box-shadow:0 6px 28px rgba(204,0,0,.45)}
+.btn-login:active{transform:scale(.98)}
+
+/* ══ PANEL ══ */
+#adminPanel{display:none}
+.admin-nav{
+  background:var(--g1);border-bottom:1px solid var(--border);
+  padding:0 32px;display:flex;align-items:center;
+  justify-content:space-between;height:62px;position:sticky;top:0;z-index:100;
+}
+.admin-brand{display:flex;align-items:center;gap:12px}
+.admin-brand img{height:32px}
+.admin-brand-txt{
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;
+  font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--mut);
+}
+.admin-right{display:flex;align-items:center;gap:16px}
+.admin-clock{font-size:.78rem;color:var(--mut);font-family:monospace}
+.btn-logout{
+  background:transparent;border:1px solid var(--border);
+  color:var(--mut);padding:7px 16px;font-size:.75rem;letter-spacing:1px;
+  cursor:pointer;border-radius:4px;transition:all .2s;
+}
+.btn-logout:hover{border-color:var(--red);color:var(--red)}
+
+.admin-body{padding:36px 32px;max-width:1140px;margin:0 auto}
+
+/* Stats */
+.admin-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:36px}
+.stat-card{
+  background:var(--g1);border:1px solid var(--border);
+  border-radius:6px;padding:18px 22px;
+  opacity:0;transform:translateY(20px);
+}
+.stat-card-n{
+  font-family:'Barlow Condensed',sans-serif;font-weight:900;
+  font-size:2rem;color:var(--w);line-height:1;
+}
+.stat-card-n em{color:var(--red);font-style:normal}
+.stat-card-l{font-size:.68rem;color:var(--mut);letter-spacing:1.5px;text-transform:uppercase;margin-top:6px}
+
+/* Tabs */
+.admin-tabs{display:flex;gap:3px;margin-bottom:24px;background:var(--g1);border:1px solid var(--border);border-radius:6px;padding:4px;width:fit-content}
+.tab-btn{
+  background:transparent;border:none;color:var(--mut);
+  padding:9px 20px;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;
+  cursor:pointer;border-radius:4px;transition:all .2s;white-space:nowrap;
+}
+.tab-btn.active{background:var(--red);color:var(--w)}
+.tab-btn:not(.active):hover{color:var(--w);background:rgba(255,255,255,.05)}
+
+/* Panel sections */
+.panel-section{display:none}
+.panel-section.active{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.panel-section.active.full{grid-template-columns:1fr}
+
+/* Cards */
+.panel-card{
+  background:var(--g1);border:1px solid var(--border);
+  border-radius:6px;padding:24px 28px;
+}
+.panel-card h3{
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;
+  font-size:1rem;letter-spacing:1.5px;text-transform:uppercase;
+  margin-bottom:18px;padding-bottom:14px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:8px;
+}
+
+/* Forms */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.form-row.three{grid-template-columns:1fr 1fr 1fr}
+.form-row.one{grid-template-columns:1fr}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group label{font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--mut)}
+.form-group input,.form-group select{
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  border-radius:4px;padding:11px 13px;color:var(--w);font-size:.88rem;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.form-group input:focus,.form-group select:focus{
+  border-color:var(--red);box-shadow:0 0 0 2px rgba(204,0,0,.1);
+}
+.form-group select option{background:var(--g2)}
+.form-actions{display:flex;gap:10px;margin-top:16px;align-items:center;flex-wrap:wrap}
+.btn-primary{
+  background:var(--red);color:var(--w);border:none;
+  padding:11px 24px;font-family:'Barlow Condensed',sans-serif;font-weight:700;
+  font-size:.85rem;letter-spacing:2px;text-transform:uppercase;
+  border-radius:4px;cursor:pointer;transition:background .2s,transform .1s;
+  box-shadow:0 3px 12px rgba(204,0,0,.25);
+}
+.btn-primary:hover{background:#aa0000}
+.btn-primary:active{transform:scale(.97)}
+.btn-sec{
+  background:transparent;color:var(--mut);border:1px solid var(--border);
+  padding:11px 18px;font-size:.78rem;letter-spacing:1px;
+  border-radius:4px;cursor:pointer;transition:all .2s;
+}
+.btn-sec:hover{border-color:var(--w);color:var(--w)}
+.form-msg{
+  font-size:.78rem;padding:8px 12px;border-radius:3px;display:none;
+  animation:fadeIn .3s ease;
+}
+.form-msg.ok{background:rgba(0,200,100,.08);border:1px solid rgba(0,200,100,.25);color:#4dff9a}
+.form-msg.err{background:rgba(204,0,0,.08);border:1px solid rgba(204,0,0,.25);color:#ff6666}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* Bulk */
+.bulk-area{
+  width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);
+  border-radius:4px;padding:12px;color:var(--w);font-size:.82rem;
+  font-family:monospace;line-height:1.8;outline:none;resize:vertical;min-height:160px;
+  transition:border-color .2s;
+}
+.bulk-area:focus{border-color:var(--red)}
+.bulk-hint{font-size:.72rem;color:var(--mut);margin-top:8px;line-height:1.6}
+.bulk-hint strong{color:rgba(255,255,255,.6)}
+
+/* Live code preview */
+.code-preview{
+  background:#0d1117;border:1px solid var(--border);border-radius:6px;
+  padding:20px;height:100%;min-height:400px;position:relative;
+  display:flex;flex-direction:column;
+}
+.code-preview-header{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);
+}
+.code-preview-title{font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--mut)}
+.code-dots{display:flex;gap:6px}
+.code-dot{width:10px;height:10px;border-radius:50%}
+.code-dot:nth-child(1){background:#ff5f57}
+.code-dot:nth-child(2){background:#febc2e}
+.code-dot:nth-child(3){background:#28c840}
+.code-body{
+  flex:1;overflow-y:auto;font-family:monospace;font-size:.78rem;
+  line-height:1.75;color:#e6edf3;white-space:pre-wrap;word-break:break-all;
+}
+.code-body .kw{color:#ff7b72}
+.code-body .str{color:#a5d6ff}
+.code-body .key{color:#79c0ff}
+.code-body .num{color:#f8c555}
+.code-preview-actions{display:flex;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+.btn-download{
+  background:var(--red);color:var(--w);border:none;
+  padding:10px 20px;font-family:'Barlow Condensed',sans-serif;font-weight:700;
+  font-size:.82rem;letter-spacing:2px;text-transform:uppercase;
+  border-radius:4px;cursor:pointer;transition:all .2s;
+  box-shadow:0 3px 12px rgba(204,0,0,.25);display:flex;align-items:center;gap:8px;
+}
+.btn-download:hover{background:#aa0000}
+.btn-copy-code{
+  background:transparent;border:1px solid var(--border);color:var(--mut);
+  padding:10px 16px;font-size:.78rem;letter-spacing:1px;
+  border-radius:4px;cursor:pointer;transition:all .2s;
+}
+.btn-copy-code:hover{border-color:var(--w);color:var(--w)}
+
+/* Tabla */
+.table-wrap{overflow-x:auto}
+.table-search{
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  border-radius:4px;padding:10px 14px;color:var(--w);font-size:.85rem;
+  outline:none;width:260px;transition:border-color .2s;margin-bottom:14px;
+}
+.table-search:focus{border-color:var(--red)}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+thead th{
+  padding:9px 12px;text-align:left;font-size:.65rem;
+  letter-spacing:2px;text-transform:uppercase;color:var(--mut);
+  border-bottom:1px solid var(--border);font-weight:500;
+}
+tbody tr{border-bottom:1px solid rgba(255,255,255,.03);transition:background .15s}
+tbody tr:hover{background:rgba(255,255,255,.025)}
+tbody td{padding:10px 12px;color:rgba(255,255,255,.75)}
+.td-name{color:var(--w);font-weight:500}
+.td-badge{
+  font-size:.65rem;letter-spacing:1px;text-transform:uppercase;
+  color:var(--red);background:rgba(204,0,0,.1);
+  padding:3px 7px;border-radius:2px;display:inline-block;white-space:nowrap;
+}
+.td-link a{color:rgba(255,255,255,.35);font-size:.72rem;text-decoration:none;transition:color .2s}
+.td-link a:hover{color:var(--red)}
+.btn-del{
+  background:transparent;border:1px solid rgba(255,0,0,.15);
+  color:rgba(255,100,100,.5);padding:4px 10px;font-size:.7rem;
+  cursor:pointer;border-radius:2px;transition:all .2s;
+}
+.btn-del:hover{background:rgba(204,0,0,.15);color:#ff4444;border-color:var(--red)}
+.empty-state{text-align:center;padding:40px;color:var(--mut);font-size:.88rem}
+
+/* Historial */
+.hist-list{display:flex;flex-direction:column;gap:8px;max-height:500px;overflow-y:auto}
+.hist-item{
+  background:rgba(255,255,255,.03);border:1px solid var(--border);
+  border-radius:4px;padding:14px 16px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.hist-item.current{border-color:rgba(0,200,100,.3);background:rgba(0,200,100,.04)}
+.hist-info{flex:1}
+.hist-date{font-size:.82rem;color:var(--w);font-weight:500}
+.hist-meta{font-size:.72rem;color:var(--mut);margin-top:3px}
+.hist-badge{
+  font-size:.65rem;letter-spacing:1px;text-transform:uppercase;
+  padding:3px 8px;border-radius:2px;
+}
+.hist-badge.current{background:rgba(0,200,100,.1);color:#4dff9a;border:1px solid rgba(0,200,100,.2)}
+.hist-badge.old{background:rgba(255,255,255,.05);color:var(--mut);border:1px solid var(--border)}
+.btn-restore{
+  background:transparent;border:1px solid rgba(255,255,255,.15);
+  color:var(--mut);padding:6px 14px;font-size:.72rem;letter-spacing:1px;
+  cursor:pointer;border-radius:3px;transition:all .2s;white-space:nowrap;
+}
+.btn-restore:hover{border-color:var(--red);color:var(--red)}
+.hist-empty{text-align:center;padding:32px;color:var(--mut);font-size:.85rem}
+
+/* Notificación toast */
+.toast{
+  position:fixed;bottom:28px;right:28px;z-index:9999;
+  background:var(--g1);border:1px solid var(--border);
+  border-left:3px solid var(--red);border-radius:5px;
+  padding:14px 20px;font-size:.85rem;color:var(--w);
+  box-shadow:0 12px 40px rgba(0,0,0,.5);
+  transform:translateY(80px);opacity:0;pointer-events:none;
+  transition:none;max-width:320px;
+}
+.toast.green{border-left-color:#28c840}
+
+@media(max-width:900px){
+  .panel-section.active{grid-template-columns:1fr}
+  .admin-stats{grid-template-columns:1fr 1fr}
+  .admin-body{padding:24px 16px}
+  .admin-nav{padding:0 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN ══ -->
+<div id="loginScreen">
+  <div class="login-bg-stripe"></div>
+  <div class="login-bg-stripe"></div>
+  <div class="login-bg-stripe"></div>
+  <div class="login-bg-stripe"></div>
+  <div class="login-glow"></div>
+  <div class="login-box" id="loginBox">
+    <div class="login-logo-wrap">
+      <img src="assets/img/logo-full.png" alt="Elite Center" class="login-logo-img" id="loginLogoImg">
+      <div class="login-divider" id="loginDivider"></div>
+    </div>
+    <div class="login-sub" id="loginSub">Panel de administración</div>
+    <div class="login-field" id="loginF1">
+      <label>Usuario</label>
+      <input type="text" id="loginUser" placeholder="usuario" autocomplete="off">
+    </div>
+    <div class="login-field" id="loginF2">
+      <label>Contraseña</label>
+      <input type="password" id="loginPass" placeholder="••••••••">
+    </div>
+    <div class="login-err" id="loginErr">Usuario o contraseña incorrectos</div>
+    <button class="btn-login" id="loginBtn" onclick="doLogin()">Ingresar →</button>
+  </div>
+</div>
+
+<!-- ══ PANEL ══ -->
+<div id="adminPanel">
+  <nav class="admin-nav">
+    <div class="admin-brand">
+      <img src="assets/img/logo-icon.png" alt="Elite Center">
+      <div class="admin-brand-txt">Panel de administración</div>
+    </div>
+    <div class="admin-right">
+      <div class="admin-clock" id="adminClock"></div>
+      <button class="btn-logout" onclick="doLogout()">Cerrar sesión</button>
+    </div>
+  </nav>
+
+  <div class="admin-body">
+
+    <!-- Stats -->
+    <div class="admin-stats" id="adminStats">
+      <div class="stat-card"><div class="stat-card-n" id="statTotal">0</div><div class="stat-card-l">Alumnos cargados</div></div>
+      <div class="stat-card"><div class="stat-card-n" id="statPlans">0</div><div class="stat-card-l">Planificaciones distintas</div></div>
+      <div class="stat-card"><div class="stat-card-n" id="statVer"><em>v1</em></div><div class="stat-card-l">Versión actual</div></div>
+      <div class="stat-card"><div class="stat-card-n" id="statLast" style="font-size:1rem;padding-top:4px">—</div><div class="stat-card-l">Último alumno</div></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="admin-tabs">
+      <button class="tab-btn active" onclick="switchTab('individual',this)">➕ Agregar</button>
+      <button class="tab-btn" onclick="switchTab('bulk',this)">📋 Carga masiva</button>
+      <button class="tab-btn" onclick="switchTab('lista',this)">👥 Alumnos</button>
+      <button class="tab-btn" onclick="switchTab('historial',this)">🕐 Historial</button>
+    </div>
+
+    <!-- TAB: Individual -->
+    <div class="panel-section active" id="tab-individual">
+      <div class="panel-card">
+        <h3>➕ Agregar alumno</h3>
+        <div class="form-row">
+          <div class="form-group"><label>Nombre</label><input type="text" id="iNombre" placeholder="Juan"></div>
+          <div class="form-group"><label>Apellido</label><input type="text" id="iApellido" placeholder="Pérez"></div>
+        </div>
+        <div class="form-row three">
+          <div class="form-group"><label>DNI (últimos 4)</label><input type="text" id="iDni" placeholder="4521" maxlength="4" inputmode="numeric"></div>
+          <div class="form-group"><label>Período</label><input type="text" id="iFecha" placeholder="Marzo 2026"></div>
+          <div class="form-group"><label>Tipo de plan</label>
+            <select id="iTipo">
+              <option value="">Seleccioná...</option>
+              <option>Entrenamiento Funcional</option>
+              <option>Entrenamiento Deportivo</option>
+              <option>Personalizado de Estética</option>
+              <option>Personalizado de Salud</option>
+              <option>Entrenamiento en Equipo</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row one">
+          <div class="form-group"><label>Link Google Drive (PDF)</label><input type="url" id="iDrive" placeholder="https://drive.google.com/file/d/..."></div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-primary" onclick="agregarIndividual()">Agregar alumno</button>
+          <button class="btn-sec" onclick="limpiarForm()">Limpiar</button>
+          <span class="form-msg" id="iMsg"></span>
+        </div>
+      </div>
+
+      <!-- Live code preview -->
+      <div class="code-preview">
+        <div class="code-preview-header">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div class="code-dots"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div>
+            <div class="code-preview-title">planificaciones.js — live preview</div>
+          </div>
+        </div>
+        <div class="code-body" id="liveCode">// Cargá alumnos para ver el código generado...</div>
+        <div class="code-preview-actions">
+          <button class="btn-download" onclick="descargarJS()">⬇ Descargar planificaciones.js</button>
+          <button class="btn-copy-code" onclick="copiarCodigo()">📋 Copiar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: Bulk -->
+    <div class="panel-section" id="tab-bulk">
+      <div class="panel-card">
+        <h3>📋 Carga masiva</h3>
+        <div class="form-row three">
+          <div class="form-group"><label>Tipo de plan</label>
+            <select id="bTipo">
+              <option value="">Seleccioná...</option>
+              <option>Entrenamiento Funcional</option>
+              <option>Entrenamiento Deportivo</option>
+              <option>Personalizado de Estética</option>
+              <option>Personalizado de Salud</option>
+              <option>Entrenamiento en Equipo</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Período</label><input type="text" id="bFecha" placeholder="Marzo 2026"></div>
+          <div class="form-group"><label>DNI: últimos 4 dígitos</label><input type="text" id="bDni" placeholder="Mismo para todos (opcional)"></div>
+        </div>
+        <div class="form-row one">
+          <div class="form-group"><label>Link Google Drive (mismo PDF para todos)</label><input type="url" id="bDrive" placeholder="https://drive.google.com/file/d/..."></div>
+        </div>
+        <div class="form-group" style="margin-top:4px">
+          <label>Alumnos — uno por línea: Nombre,Apellido,DNI</label>
+          <textarea class="bulk-area" id="bAlumnos" placeholder="Juan,Pérez,4521
+María,González,2277
+Lucas,Rodríguez,9103"></textarea>
+          <div class="bulk-hint">
+            Formato: <strong>Nombre,Apellido,UltimosDigitosDNI</strong> por línea.<br>
+            Si todos tienen el mismo DNI, dejá el campo arriba y omití el tercer campo en cada línea.
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-primary" onclick="cargaMasiva()">Cargar todos</button>
+          <span class="form-msg" id="bMsg"></span>
+        </div>
+      </div>
+
+      <!-- Live code -->
+      <div class="code-preview">
+        <div class="code-preview-header">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div class="code-dots"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div>
+            <div class="code-preview-title">planificaciones.js — live preview</div>
+          </div>
+        </div>
+        <div class="code-body" id="liveCode2">// Cargá alumnos para ver el código generado...</div>
+        <div class="code-preview-actions">
+          <button class="btn-download" onclick="descargarJS()">⬇ Descargar planificaciones.js</button>
+          <button class="btn-copy-code" onclick="copiarCodigo()">📋 Copiar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: Lista -->
+    <div class="panel-section full" id="tab-lista">
+      <div class="panel-card">
+        <h3>👥 Lista de alumnos</h3>
+        <input type="text" class="table-search" id="tableSearch" placeholder="Buscar por nombre..." oninput="cargarTabla()">
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>#</th><th>Nombre completo</th><th>DNI</th><th>Plan</th><th>Período</th><th>Drive</th><th></th>
+            </tr></thead>
+            <tbody id="alumnosTabla"></tbody>
+          </table>
+          <div class="empty-state" id="emptyState" style="display:none">No hay alumnos cargados todavía</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: Historial -->
+    <div class="panel-section full" id="tab-historial">
+      <div class="panel-card">
+        <h3>🕐 Historial de versiones</h3>
+        <p style="color:var(--mut);font-size:.82rem;margin-bottom:20px;line-height:1.6">
+          Cada vez que agregás o eliminás alumnos se guarda una versión automáticamente. Podés restaurar cualquier versión anterior con un clic.
+        </p>
+        <div class="hist-list" id="histList">
+          <div class="hist-empty">No hay versiones guardadas todavía</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════════════════════════════════
+// CONFIG
+// ════════════════════════════════════
+const ADMIN_USER = 'elitecenter';
+const ADMIN_PASS = 'Elite2026!';
+const MAX_HIST   = 20; // máximo versiones guardadas
+
+// ── Estado ──
+let alumnos  = JSON.parse(localStorage.getItem('ec_alumnos')  || '[]');
+let historial= JSON.parse(localStorage.getItem('ec_historial')|| '[]');
+
+// ════════════════════════════════════
+// GSAP LOGIN ANIMATION
+// ════════════════════════════════════
+window.addEventListener('load', () => {
+  const tl = gsap.timeline({ delay: .15 });
+  tl.to('#loginBox',       { opacity:1, duration:.6, ease:'power3.out' })
+    .to('#loginLogoImg',   { opacity:1, y:0, duration:.7, ease:'back.out(1.4)' }, '-=.3')
+    .to('#loginDivider',   { opacity:1, scaleX:1, duration:.5, ease:'power3.out', transformOrigin:'center' }, '-=.2')
+    .to('#loginSub',       { opacity:1, duration:.5, ease:'power3.out' }, '-=.2')
+    .to('#loginF1',        { opacity:1, y:0, duration:.45, ease:'power3.out' }, '-=.15')
+    .to('#loginF2',        { opacity:1, y:0, duration:.45, ease:'power3.out' }, '-=.25')
+    .to('#loginBtn',       { opacity:1, y:0, duration:.45, ease:'back.out(1.3)' }, '-=.2');
+
+  // Stripes
+  gsap.fromTo('.login-bg-stripe',
+    { scaleY:0, transformOrigin:'top center' },
+    { scaleY:1, duration:1.2, stagger:.15, ease:'power3.out', delay:.1 }
+  );
+  gsap.to('.login-glow', {
+    x: 40, y: -30, duration:4, repeat:-1, yoyo:true, ease:'sine.inOut'
+  });
+});
+
+// Enter key login
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    if (document.getElementById('loginScreen').style.display !== 'none') doLogin();
+  }
+});
+
+// ── LOGIN ──
+function doLogin() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value.trim();
+  if (u === ADMIN_USER && p === ADMIN_PASS) {
+    gsap.to('#loginBox', {
+      opacity:0, y:-30, scale:.95, duration:.4, ease:'power3.in',
+      onComplete: () => {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('adminPanel').style.display  = 'block';
+        animarPanel();
+      }
+    });
+  } else {
+    const err = document.getElementById('loginErr');
+    err.style.display = 'block';
+    gsap.fromTo('#loginBox', { x:-10 }, { x:0, duration:.06, repeat:5, yoyo:true, ease:'none' });
+    setTimeout(() => err.style.display = 'none', 3000);
+  }
+}
+
+function doLogout() {
+  gsap.to('#adminPanel', { opacity:0, duration:.3, ease:'power2.in', onComplete: () => {
+    document.getElementById('adminPanel').style.display  = 'none';
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('adminPanel').style.opacity  = 1;
+    document.getElementById('loginUser').value = '';
+    document.getElementById('loginPass').value = '';
+    gsap.fromTo('#loginBox', { opacity:0, y:20 }, { opacity:1, y:0, duration:.5, ease:'power3.out' });
+  }});
+}
+
+// ── ANIMACIÓN PANEL ──
+function animarPanel() {
+  gsap.fromTo('.admin-nav',   { opacity:0, y:-20 }, { opacity:1, y:0, duration:.5, ease:'power3.out' });
+  gsap.fromTo('.stat-card',   { opacity:0, y:24 },  { opacity:1, y:0, duration:.5, stagger:.08, ease:'back.out(1.3)', delay:.2 });
+  gsap.fromTo('.admin-tabs',  { opacity:0, y:16 },  { opacity:1, y:0, duration:.4, ease:'power3.out', delay:.5 });
+  gsap.fromTo('.panel-section.active', { opacity:0, y:20 }, { opacity:1, y:0, duration:.5, ease:'power3.out', delay:.6 });
+  actualizarStats();
+  actualizarLiveCode();
+  cargarTabla();
+  cargarHistorial();
+  reloj();
+}
+
+// ── RELOJ ──
+function reloj() {
+  const el = document.getElementById('adminClock');
+  const tick = () => {
+    const now = new Date();
+    el.textContent = now.toLocaleTimeString('es-AR');
+  };
+  tick();
+  setInterval(tick, 1000);
+}
+
+// ── TABS ──
+function switchTab(tab, btn) {
+  document.querySelectorAll('.panel-section').forEach(s => { s.classList.remove('active'); s.style.opacity = 0; });
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const sec = document.getElementById('tab-' + tab);
+  sec.classList.add('active');
+  btn.classList.add('active');
+  gsap.to(sec, { opacity:1, y:0, duration:.35, ease:'power3.out' });
+  gsap.fromTo(sec, { opacity:0, y:12 }, { opacity:1, y:0, duration:.35, ease:'power3.out' });
+  if (tab === 'lista')     cargarTabla();
+  if (tab === 'historial') cargarHistorial();
+}
+
+// ── AGREGAR INDIVIDUAL ──
+function agregarIndividual() {
+  const nombre   = document.getElementById('iNombre').value.trim();
+  const apellido = document.getElementById('iApellido').value.trim();
+  const dni      = document.getElementById('iDni').value.trim();
+  const tipo     = document.getElementById('iTipo').value;
+  const fecha    = document.getElementById('iFecha').value.trim();
+  const drive    = document.getElementById('iDrive').value.trim();
+
+  if (!nombre || !apellido || !dni || !tipo || !fecha || !drive) {
+    mostrarMsg('iMsg', 'Completá todos los campos', 'err'); return;
+  }
+  if (!/^\d{4}$/.test(dni)) {
+    mostrarMsg('iMsg', 'El DNI debe tener exactamente 4 dígitos numéricos', 'err'); return;
+  }
+
+  guardarVersion();
+  alumnos.push({ nombre, apellido, dni, tipo, fecha, drive });
+  guardar();
+  limpiarForm();
+  actualizarTodo();
+  mostrarMsg('iMsg', `✅ ${nombre} ${apellido} agregado`, 'ok');
+  toast(`✅ ${nombre} ${apellido} agregado correctamente`, 'green');
+}
+
+function limpiarForm() {
+  ['iNombre','iApellido','iDni','iFecha','iDrive'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('iTipo').value = '';
+}
+
+// ── CARGA MASIVA ──
+function cargaMasiva() {
+  const tipo    = document.getElementById('bTipo').value;
+  const fecha   = document.getElementById('bFecha').value.trim();
+  const drive   = document.getElementById('bDrive').value.trim();
+  const dniGlobal = document.getElementById('bDni').value.trim();
+  const texto   = document.getElementById('bAlumnos').value.trim();
+
+  if (!tipo || !fecha || !drive || !texto) {
+    mostrarMsg('bMsg', 'Completá tipo, período, drive y la lista de alumnos', 'err'); return;
+  }
+
+  guardarVersion();
+  const lineas = texto.split('\n').filter(l => l.trim());
+  let ok = 0, err = 0;
+
+  lineas.forEach(linea => {
+    const p = linea.split(',').map(x => x.trim());
+    const nombre   = p[0] || '';
+    const apellido = p[1] || '';
+    const dni      = p[2] || dniGlobal;
+    if (nombre && apellido && dni && /^\d{4}$/.test(dni)) {
+      alumnos.push({ nombre, apellido, dni, tipo, fecha, drive });
+      ok++;
+    } else { err++; }
+  });
+
+  guardar();
+  actualizarTodo();
+  document.getElementById('bAlumnos').value = '';
+  const msg = err > 0 ? `✅ ${ok} agregados · ⚠️ ${err} con error` : `✅ ${ok} alumnos agregados`;
+  mostrarMsg('bMsg', msg, ok > 0 ? 'ok' : 'err');
+  if (ok > 0) toast(`✅ ${ok} alumnos cargados correctamente`, 'green');
+}
+
+// ── TABLA ──
+function cargarTabla() {
+  const tbody = document.getElementById('alumnosTabla');
+  const empty = document.getElementById('emptyState');
+  const q = (document.getElementById('tableSearch')?.value || '').toLowerCase();
+  const filtrados = alumnos.filter(a => `${a.nombre} ${a.apellido}`.toLowerCase().includes(q));
+
+  tbody.innerHTML = '';
+  empty.style.display = filtrados.length ? 'none' : 'block';
+
+  filtrados.forEach((a, i) => {
+    const ri = alumnos.indexOf(a);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="color:var(--mut)">${i+1}</td>
+      <td class="td-name">${a.nombre} ${a.apellido}</td>
+      <td style="color:var(--mut);font-family:monospace">****${a.dni}</td>
+      <td><span class="td-badge">${a.tipo}</span></td>
+      <td style="color:var(--mut)">${a.fecha}</td>
+      <td class="td-link"><a href="${a.drive}" target="_blank">Ver PDF ↗</a></td>
+      <td><button class="btn-del" onclick="eliminar(${ri})">Eliminar</button></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function eliminar(idx) {
+  if (!confirm(`¿Eliminar a ${alumnos[idx].nombre} ${alumnos[idx].apellido}?`)) return;
+  const nombre = `${alumnos[idx].nombre} ${alumnos[idx].apellido}`;
+  guardarVersion();
+  alumnos.splice(idx, 1);
+  guardar();
+  actualizarTodo();
+  cargarTabla();
+  toast(`🗑 ${nombre} eliminado`, '');
+}
+
+// ── LIVE CODE ──
+function actualizarLiveCode() {
+  const code = generarCodigoTexto();
+  ['liveCode','liveCode2'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.textContent = code;
+      gsap.fromTo(el, { opacity:.4 }, { opacity:1, duration:.3, ease:'power2.out' });
+    }
+  });
+}
+
+function generarCodigoTexto() {
+  if (!alumnos.length) return '// No hay alumnos cargados todavía\nconst PLANIFICACIONES = [];';
+  let code = 'const PLANIFICACIONES = [\n\n';
+  alumnos.forEach(a => {
+    code += `  {\n    nombre:     '${a.nombre} ${a.apellido}',\n    dni:        '${a.dni}',\n    tipo:       '${a.tipo}',\n    entrenador: 'Elite Center',\n    fecha:      '${a.fecha}',\n    drive:      '${a.drive}',\n  },\n`;
+  });
+  code += '\n];\n\n';
+  // Agrego el resto del archivo (funciones de búsqueda)
+  code += `// ════════════════════════════════════
+// LÓGICA — no tocar
+// ════════════════════════════════════
+
+function normalizar(str) {
+  return str.toLowerCase()
+    .normalize('NFD').replace(/[\\u0300-\\u036f]/g, '')
+    .replace(/\\s+/g, ' ').trim();
+}
+
+const nombresDB = [...new Set(PLANIFICACIONES.map(a => a.nombre + ' ' + a.apellido.split(' ')[0]))];`;
+  return code;
+}
+
+// ── DESCARGAR JS ──
+function descargarJS() {
+  if (!alumnos.length) { toast('⚠️ No hay alumnos para exportar', ''); return; }
+
+  // Generar el archivo completo con toda la lógica
+  let content = generarArchivoCompleto();
+  const blob = new Blob([content], { type: 'application/javascript' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'planificaciones.js';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('⬇ planificaciones.js descargado', 'green');
+}
+
+function generarArchivoCompleto() {
+  let code = `/**\n * Elite Center – planificaciones.js\n * Generado automáticamente desde el panel admin\n * ${new Date().toLocaleString('es-AR')}\n * Total alumnos: ${alumnos.length}\n */\n\nconst PLANIFICACIONES = [\n\n`;
+  alumnos.forEach(a => {
+    code += `  {\n    nombre:     '${a.nombre} ${a.apellido}',\n    dni:        '${a.dni}',\n    tipo:       '${a.tipo}',\n    entrenador: 'Elite Center',\n    fecha:      '${a.fecha}',\n    drive:      '${a.drive}',\n  },\n`;
+  });
+  code += `\n];\n\n`;
+  code += `function normalizar(str) {
+  return str.toLowerCase()
+    .normalize('NFD').replace(/[\\u0300-\\u036f]/g, '')
+    .replace(/\\s+/g, ' ').trim();
+}
+
+const nombresDB = [...new Set(PLANIFICACIONES.map(a => a.nombre))];
+
+document.addEventListener('DOMContentLoaded', () => {
+  const input       = document.getElementById('planNombreInput');
+  const suggestions = document.getElementById('planSuggestions');
+  const dniWrap     = document.getElementById('planDniWrap');
+  if (!input) return;
+
+  input.addEventListener('input', () => {
+    const val = input.value.trim();
+    suggestions.innerHTML = '';
+    suggestions.style.display = 'none';
+    if (dniWrap) dniWrap.style.display = 'none';
+    if (val.length < 2) return;
+    const valNorm = normalizar(val);
+    const matches = nombresDB.filter(n => normalizar(n).includes(valNorm));
+    if (!matches.length) return;
+    matches.slice(0, 6).forEach(nombre => {
+      const item = document.createElement('div');
+      item.className = 'plan-suggestion-item';
+      const normNombre = normalizar(nombre);
+      const idx = normNombre.indexOf(valNorm);
+      item.innerHTML = nombre.substring(0, idx) + '<strong>' + nombre.substring(idx, idx + val.length) + '</strong>' + nombre.substring(idx + val.length);
+      item.addEventListener('mousedown', e => { e.preventDefault(); input.value = nombre; suggestions.style.display = 'none'; buscarPlan(); });
+      suggestions.appendChild(item);
+    });
+    suggestions.style.display = 'block';
+  });
+
+  input.addEventListener('blur', () => { setTimeout(() => { suggestions.style.display = 'none'; }, 150); });
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') buscarPlan(); if (e.key === 'Escape') suggestions.style.display = 'none'; });
+
+  const dniInput = document.getElementById('planDniInput');
+  if (dniInput) {
+    dniInput.addEventListener('keydown', e => { if (e.key === 'Enter') confirmarDni(); });
+    dniInput.addEventListener('input', () => { dniInput.value = dniInput.value.replace(/\\D/g, '').slice(0, 4); });
+  }
+});
+
+function buscarPlan() {
+  const input   = document.getElementById('planNombreInput');
+  const query   = input.value.trim();
+  const result  = document.getElementById('planResult');
+  const card    = document.getElementById('planCard');
+  const error   = document.getElementById('planError');
+  const dniWrap = document.getElementById('planDniWrap');
+  const sugg    = document.getElementById('planSuggestions');
+  sugg.style.display = 'none';
+  result.style.display = 'none';
+  card.style.display   = 'none';
+  error.style.display  = 'none';
+  if (dniWrap) dniWrap.style.display = 'none';
+  if (!query) { input.classList.add('shake'); setTimeout(() => input.classList.remove('shake'), 500); return; }
+  const queryNorm = normalizar(query);
+  const matches = PLANIFICACIONES.filter(a => normalizar(a.nombre) === queryNorm);
+  if (matches.length === 0) {
+    result.style.display = 'block'; error.style.display = 'block';
+    if (typeof gsap !== 'undefined') { gsap.from(error, { opacity:0, y:16, duration:.4, ease:'power3.out' }); gsap.to(input, { x:-8, duration:.07, repeat:5, yoyo:true, ease:'none', onComplete: () => gsap.set(input, { x:0 }) }); }
+  } else if (matches.length === 1) {
+    mostrarPlan(matches[0]);
+  } else {
+    result.style.display = 'block'; dniWrap.style.display = 'block';
+    document.getElementById('planDniInput').value = '';
+    document.getElementById('planDniInput').focus();
+    if (typeof gsap !== 'undefined') { gsap.from(dniWrap, { opacity:0, y:16, duration:.45, ease:'power3.out' }); }
+  }
+}
+
+function confirmarDni() {
+  const nombre   = document.getElementById('planNombreInput').value.trim();
+  const dni      = document.getElementById('planDniInput').value.trim();
+  const card     = document.getElementById('planCard');
+  const error    = document.getElementById('planError');
+  const dniWrap  = document.getElementById('planDniWrap');
+  const dniInput = document.getElementById('planDniInput');
+  if (dni.length < 4) { dniInput.classList.add('shake'); setTimeout(() => dniInput.classList.remove('shake'), 500); return; }
+  const queryNorm = normalizar(nombre);
+  const match = PLANIFICACIONES.find(a => normalizar(a.nombre) === queryNorm && a.dni === dni);
+  if (match) { dniWrap.style.display = 'none'; mostrarPlan(match); }
+  else {
+    error.style.display = 'block';
+    document.getElementById('planErrorMsg').textContent = 'DNI incorrecto. Verificá los últimos 4 dígitos o consultá a tu entrenador.';
+    if (typeof gsap !== 'undefined') { gsap.from(error, { opacity:0, y:12, duration:.35, ease:'power3.out' }); gsap.to(dniInput, { x:-8, duration:.07, repeat:5, yoyo:true, ease:'none', onComplete: () => gsap.set(dniInput, { x:0 }) }); }
+  }
+}
+
+function mostrarPlan(alumno) {
+  const result = document.getElementById('planResult');
+  const card   = document.getElementById('planCard');
+  result.style.display = 'block'; card.style.display = 'block';
+  document.getElementById('planNombre').textContent     = alumno.nombre;
+  document.getElementById('planTipo').textContent       = alumno.tipo;
+  document.getElementById('planTipoRow').textContent    = alumno.tipo;
+  document.getElementById('planEntrenador').textContent = alumno.entrenador;
+  document.getElementById('planFecha').textContent      = alumno.fecha;
+  document.getElementById('planDescarga').href          = alumno.drive;
+  if (typeof gsap !== 'undefined') { gsap.from(card, { opacity:0, y:20, duration:.5, ease:'power3.out' }); }
+}
+
+function resetPlan() {
+  document.getElementById('planNombreInput').value          = '';
+  document.getElementById('planResult').style.display      = 'none';
+  document.getElementById('planCard').style.display        = 'none';
+  document.getElementById('planError').style.display       = 'none';
+  document.getElementById('planDniWrap').style.display     = 'none';
+  document.getElementById('planSuggestions').style.display = 'none';
+  document.getElementById('planNombreInput').focus();
+}
+`;
+  return code;
+}
+
+function copiarCodigo() {
+  navigator.clipboard.writeText(generarArchivoCompleto()).then(() => {
+    toast('📋 Código copiado al portapapeles', 'green');
+  });
+}
+
+// ── HISTORIAL ──
+function guardarVersion() {
+  const snapshot = {
+    fecha:   new Date().toLocaleString('es-AR'),
+    ts:      Date.now(),
+    total:   alumnos.length,
+    data:    JSON.parse(JSON.stringify(alumnos))
+  };
+  historial.unshift(snapshot);
+  if (historial.length > MAX_HIST) historial = historial.slice(0, MAX_HIST);
+  localStorage.setItem('ec_historial', JSON.stringify(historial));
+}
+
+function cargarHistorial() {
+  const list = document.getElementById('histList');
+  if (!historial.length) {
+    list.innerHTML = '<div class="hist-empty">No hay versiones guardadas todavía</div>';
+    return;
+  }
+  list.innerHTML = '';
+  historial.forEach((h, i) => {
+    const div = document.createElement('div');
+    div.className = `hist-item ${i === 0 ? 'current' : ''}`;
+    div.innerHTML = `
+      <div class="hist-info">
+        <div class="hist-date">${h.fecha}</div>
+        <div class="hist-meta">${h.total} alumno${h.total !== 1 ? 's' : ''}</div>
+      </div>
+      <span class="hist-badge ${i === 0 ? 'current' : 'old'}">${i === 0 ? 'Actual' : `v${historial.length - i}`}</span>
+      ${i > 0 ? `<button class="btn-restore" onclick="restaurar(${i})">Restaurar</button>` : ''}
+    `;
+    list.appendChild(div);
+  });
+  gsap.fromTo('.hist-item', { opacity:0, x:-16 }, { opacity:1, x:0, stagger:.05, duration:.35, ease:'power3.out' });
+}
+
+function restaurar(idx) {
+  const h = historial[idx];
+  if (!confirm(`¿Restaurar la versión del ${h.fecha} con ${h.total} alumnos?\nSe guardará la versión actual antes de restaurar.`)) return;
+  guardarVersion();
+  alumnos = JSON.parse(JSON.stringify(h.data));
+  guardar();
+  actualizarTodo();
+  cargarHistorial();
+  toast(`✅ Versión del ${h.fecha} restaurada`, 'green');
+}
+
+// ── STATS ──
+function actualizarStats() {
+  document.getElementById('statTotal').textContent = alumnos.length;
+  const drives = new Set(alumnos.map(a => a.drive)).size;
+  document.getElementById('statPlans').textContent = drives;
+  document.getElementById('statVer').innerHTML = `<em>v${historial.length + 1}</em>`;
+  const ult = alumnos.length ? `${alumnos[alumnos.length-1].nombre} ${alumnos[alumnos.length-1].apellido}` : '—';
+  document.getElementById('statLast').textContent = ult;
+}
+
+// ── TOAST ──
+function toast(msg, type) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast ${type}`;
+  gsap.killTweensOf(el);
+  gsap.fromTo(el, { y:80, opacity:0 }, { y:0, opacity:1, duration:.4, ease:'back.out(1.4)' });
+  gsap.to(el, { y:80, opacity:0, duration:.35, ease:'power2.in', delay:3 });
+}
+
+// ── UTILS ──
+function guardar() { localStorage.setItem('ec_alumnos', JSON.stringify(alumnos)); }
+function actualizarTodo() { actualizarStats(); actualizarLiveCode(); }
+function mostrarMsg(id, txt, tipo) {
+  const el = document.getElementById(id);
+  el.textContent = txt; el.className = `form-msg ${tipo}`; el.style.display = 'block';
+  setTimeout(() => el.style.display = 'none', 4000);
+}
+</script>
+</body>
+</html>
+HTMLEOF
+echo "OK - $(wc -l < /home/claude/elite-center/admin-ec2026.html) lines"

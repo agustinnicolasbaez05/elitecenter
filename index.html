@@ -815,6 +815,27 @@
 
       <div class="plan-result" id="planResult" style="display:none">
 
+        <!-- Pedir DNI cuando hay nombre duplicado -->
+        <div class="plan-dni-wrap" id="planDniWrap" style="display:none">
+          <div class="plan-dni-title">
+            <span>🔐</span> Confirmá tu identidad
+          </div>
+          <p class="plan-dni-desc">Encontramos más de una persona con ese nombre. Ingresá los últimos 4 dígitos de tu DNI para continuar.</p>
+          <div class="plan-input-box" style="margin-bottom:8px">
+            <span class="plan-input-icon">🪪</span>
+            <input
+              type="text"
+              id="planDniInput"
+              placeholder="Últimos 4 dígitos del DNI"
+              maxlength="4"
+              autocomplete="off"
+              inputmode="numeric"
+            >
+            <button class="btn btn-red plan-btn" onclick="confirmarDni()">Confirmar</button>
+          </div>
+        </div>
+
+        <!-- Éxito -->
         <div class="plan-card" id="planCard" style="display:none">
           <div class="plan-card-top">
             <div class="plan-card-ico">📋</div>
@@ -834,9 +855,10 @@
           <p class="plan-dl-note">Se abre en Google Drive. Podés descargar el PDF desde ahí.</p>
         </div>
 
+        <!-- Error -->
         <div class="plan-error" id="planError" style="display:none">
           <div class="plan-error-ico">❌</div>
-          <p>No encontramos una planificación con ese nombre. Verificá cómo te registraste o consultá a tu entrenador.</p>
+          <p id="planErrorMsg">No encontramos una planificación con ese nombre. Verificá cómo te registraste o consultá a tu entrenador.</p>
           <button class="btn plan-retry" onclick="resetPlan()">Intentar de nuevo</button>
         </div>
 
