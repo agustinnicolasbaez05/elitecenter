@@ -318,6 +318,66 @@ tbody td{padding:10px 12px;color:rgba(255,255,255,.75)}
   .admin-stats{grid-template-columns:1fr 1fr}
   .admin-body{padding:24px 16px}
   .admin-nav{padding:0 16px}
+  .code-preview{min-height:280px}
+  .form-row{grid-template-columns:1fr}
+  .form-row.three{grid-template-columns:1fr}
+}
+
+@media(max-width:600px){
+  /* Login */
+  .login-box{padding:36px 24px;margin:16px}
+
+  /* Nav */
+  .admin-nav{height:auto;padding:12px 16px;flex-wrap:wrap;gap:8px}
+  .admin-brand-txt{display:none}
+  .admin-clock{font-size:.7rem}
+  .btn-logout{padding:6px 12px;font-size:.7rem}
+
+  /* Stats — 1 columna en móvil */
+  .admin-stats{grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+  .stat-card{padding:14px 16px}
+  .stat-card-n{font-size:1.6rem}
+  .stat-card-l{font-size:.62rem}
+
+  /* Tabs — scroll horizontal */
+  .admin-tabs{
+    width:100%;overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    padding:3px;
+    gap:2px;
+  }
+  .admin-tabs::-webkit-scrollbar{display:none}
+  .tab-btn{padding:8px 14px;font-size:.7rem;letter-spacing:1px;white-space:nowrap}
+
+  /* Forms */
+  .form-row,.form-row.three,.form-row.one{grid-template-columns:1fr}
+  .panel-card{padding:18px 16px}
+  .panel-card h3{font-size:.88rem}
+  .form-group input,.form-group select{padding:10px 12px;font-size:.85rem}
+  .btn-primary{padding:11px 18px;font-size:.8rem}
+  .form-actions{flex-wrap:wrap}
+
+  /* Tabla — scroll horizontal */
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{min-width:560px}
+  .table-search{width:100%}
+  thead th{font-size:.6rem;padding:8px 10px}
+  tbody td{padding:8px 10px;font-size:.78rem}
+  .td-badge{font-size:.6rem}
+
+  /* Code preview */
+  .code-preview{min-height:200px}
+  .code-body{font-size:.72rem}
+  .code-preview-actions{flex-wrap:wrap}
+  .btn-download{width:100%;justify-content:center}
+
+  /* Historial */
+  .hist-item{flex-wrap:wrap;gap:8px}
+  .btn-restore{width:100%;text-align:center}
+
+  /* Toast */
+  .toast{bottom:16px;right:16px;left:16px;max-width:none}
 }
 </style>
 </head>
@@ -1115,5 +1175,3 @@ function mostrarMsg(id, txt, tipo) {
 </script>
 </body>
 </html>
-HTMLEOF
-echo "OK - $(wc -l < /home/claude/elite-center/admin-ec2026.html) lines"
